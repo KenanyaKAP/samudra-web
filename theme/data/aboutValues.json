@@ -1,0 +1,9 @@
+{
+  "heroImage": "/images/about/about.png",
+  "title": "Core Values",
+  "highlight": "[TODO] One-line summary of Samudra's core values.",
+  "paragraphs": [
+    "[TODO] Core values — replace this placeholder in wp-admin under Site Content → About › Core Values.",
+    "[TODO] Add one paragraph per value, or remove this one."
+  ]
+}

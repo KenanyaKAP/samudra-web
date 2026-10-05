@@ -1,0 +1,17 @@
+/*
+Theme Name: Samudra Website
+Theme URI: https://samudra.tridentdevstudio.com
+Description: Hybrid WordPress + React theme for Samudra - Exhibition & Event Management. Serves the built React SPA from theme/dist and exposes all editable content over the REST API at /wp-json/samudra/v1/.
+Author: Kenanya K. A. Prasetyo
+Author URI: https://kenanya.my.id
+Version: 2.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: samudra-web
+*/
+
+/* All presentation lives in the React bundle; this file only carries the
+   theme header that WordPress requires. */

@@ -1,0 +1,41 @@
+{
+  "heroImage": "/images/about/about.png",
+  "intro": {
+    "title": "About Samudra",
+    "highlight": "Samudra Dyan Praga is The Biggest Stand Contractor in Indonesia.",
+    "body": "Established since 1984 with the aim of providing superior exhibition construction services to clients based in Indonesia. The company’scope of business was steadily expanded to provide full exhibition management services to clients participating in domestic and overseas expositions, trade fairs and exhibitions, conventions and seminars."
+  },
+  "certifications": [
+    {
+      "image": "/images/about/osi-9001.png",
+      "title": "Achieving ISO 9001",
+      "body": "Achieving ISO 9001:2015 Certification for Quality Management Systems is an important milestone for us. This certification illustrates our strong commitment to quality at all levels of our management."
+    },
+    {
+      "image": "/images/about/ospi.png",
+      "title": "Member of OSPI",
+      "body": "Since 1994, the company’s competitive edge has been bolstered by its OSPI (Octanorm Service Partner International) membership, a global network of 151 providers across 55 countries that ensures consistent, high-quality exhibition services worldwide."
+    },
+    {
+      "image": "/images/about/hts.png",
+      "title": "Roders HTS and Losberger GmbH Partnership",
+      "body": "Samudra tent has been supported by Roders HTS and Losberger GmbH, the world leaders in manufacture and distribution of mobile structures. We also can provider special design of membrant structure."
+    }
+  ],
+  "alliance": {
+    "heading": "Strategic Alliance",
+    "body": "An official member of Octanorm Service Partner International (OSPI), a worldwide network of highly qualified modular exhibition system providers and contractors for giving guarantee the same quality of service at any exhibition anywhere in the world. SAMUDRA is Proud to be the sole Octanorm Service Partner International Member in Indonesia.",
+    "image": "/images/home/people.png"
+  },
+  "partner": {
+    "heading": "Your Exhibition Partner",
+    "image": "/images/home/bg.png",
+    "stats": [
+      { "value": 40, "suffix": "+", "label": "EXHIBITION CONSTRUCTION" },
+      { "value": 2000, "suffix": "+", "label": "SPECIAL PROJECTS" },
+      { "value": 500, "suffix": "+", "label": "INTERIOR DESIGN & BUILD" },
+      { "value": 34, "suffix": "+", "label": "TENT SERVICE" }
+    ],
+    "body": "Our portfolio spans major exhibitions across Indonesia, including Indonesia International Motor Show, Indo Build Tech, Trade Expo Indonesia, and many more. Each project reflects our dedication to creating impactful brand experiences. Our portfolio spans major exhibitions across Indonesia, including Indonesia International Motor Show, Indo Build Tech, Trade Expo Indonesia, and many more. Each project reflects our dedication to creating impactful brand experiences."
+  }
+}

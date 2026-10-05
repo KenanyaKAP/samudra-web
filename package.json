@@ -1,0 +1,42 @@
+{
+  "name": "samudra-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:wp": "node scripts/copy-data.js && cross-env WP_BUILD=true vite build && echo WordPress theme build complete!",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "wp:reseed": "node scripts/reseed-wp.js",
+    "wp:seed-demo": "node scripts/seed-demo.js"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource-variable/montserrat": "^5.3.0",
+    "@mui/icons-material": "^7.3.4",
+    "@mui/material": "^7.3.4",
+    "axios": "^1.13.2",
+    "embla-carousel-auto-scroll": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.23.24",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "babel-plugin-react-compiler": "^19.1.0-rc.3",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "vite": "^7.1.7"
+  }
+}

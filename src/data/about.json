@@ -1,0 +1,41 @@
+{
+  "heading": "About Brand",
+  "items": [
+    {
+      "title": "Samudra History",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/hts.png",
+      "link": "/about/history"
+    },
+    {
+      "title": "About Samudra",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/about.png",
+      "link": "/about/company"
+    },
+    {
+      "title": "Vision & Mision",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/hero.png",
+      "link": "/about/vision"
+    },
+    {
+      "title": "Core Values",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/ospi.png",
+      "link": "/about/values"
+    },
+    {
+      "title": "Board of Management",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/people/president.png",
+      "link": "/about/management"
+    },
+    {
+      "title": "Awards",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
+      "image": "/images/about/osi-9001.png",
+      "link": "/about/awards"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "logo": "/images/logo-white.png",
+  "nav": [
+    { "label": "Home", "path": "/", "children": [] },
+    {
+      "label": "About",
+      "path": "/about",
+      "children": [
+        { "label": "Samudra History", "path": "/about/history" },
+        { "label": "About Samudra", "path": "/about/company" },
+        { "label": "Vision & Mission", "path": "/about/vision" },
+        { "label": "Core Values", "path": "/about/values" },
+        { "label": "Board of Management", "path": "/about/management" },
+        { "label": "Awards", "path": "/about/awards" }
+      ]
+    },
+    { "label": "Services", "path": "/services", "children": [] },
+    { "label": "News", "path": "/events", "children": [] },
+    { "label": "Contact", "path": "/contact", "children": [] },
+    { "label": "Career", "path": "/career", "children": [] }
+  ],
+  "offices": {
+    "headquarter": {
+      "city": "Jakarta",
+      "company": "PT. Samudra Dyan Praga",
+      "address": [
+        "Gedung Graha Inti 5th Floor",
+        "Jl Raya Kalimalang No 87 Jakarta 13430 Indonesia"
+      ],
+      "phones": ["+6221 8604622", "+6221 50813122"],
+      "fax": ["+6221 8626128"],
+      "email": "info@samudra.co.id"
+    },
+    "branches": [
+      {
+        "city": "Surabaya",
+        "address": ["Jl. Karah No. 9A", "Surabaya 60232 Indonesia"],
+        "phones": ["+6231 8288288"],
+        "fax": ["+6231 8271951"],
+        "email": "surabaya@samudra.co.id"
+      },
+      {
+        "city": "Bali",
+        "address": ["Jl. Pintas Siligita No. 12A", "Bali 80361 Indonesia"],
+        "phones": ["+62361 4728959"],
+        "fax": ["+62361 777679"],
+        "email": "bali@samudra.co.id"
+      },
+      {
+        "city": "Medan",
+        "address": ["Jl. Badur No.5 Hamdan, Medan Maimun", "Medan 20151 Indonesia"],
+        "phones": ["+62819 05030981", "+62812 69715776"],
+        "fax": [],
+        "email": "medan@samudra.co.id"
+      },
+      {
+        "city": "Makassar",
+        "address": ["Jl. Sultan Alauddin I No. 19", "Makassar 90223 Indonesia"],
+        "phones": ["+62411 856221", "+62823 45303293"],
+        "fax": [],
+        "email": "makassar@samudra.co.id"
+      }
+    ]
+  },
+  "footer": {
+    "headquarterLabel": "OUR HEADQUARTER",
+    "branchLabel": "BRANCH OFFICE",
+    "connectLabel": "CONNECT WITH US",
+    "copyright": "© 2026, Samudra Dyan Praga. All rights reserved.",
+    "socials": [
+      { "platform": "facebook", "url": "https://facebook.com" },
+      { "platform": "instagram", "url": "https://instagram.com" },
+      { "platform": "youtube", "url": "https://youtube.com" }
+    ]
+  }
+}

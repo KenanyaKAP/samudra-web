@@ -1,0 +1,4 @@
+/* Bundled font (self-contained via @fontsource — no external CDN).
+   The same Montserrat variable font OLD loaded from Google Fonts
+   (wght 100–900), so every weight renders exactly as before. */
+@import "@fontsource-variable/montserrat/wght.css";

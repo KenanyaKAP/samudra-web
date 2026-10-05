@@ -1,0 +1,15 @@
+/* App specific styles - keep minimal to avoid conflicts with Material UI */
+
+/* Fade out animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
