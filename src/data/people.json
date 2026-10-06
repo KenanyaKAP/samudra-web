@@ -1,0 +1,61 @@
+{
+  "hero": {
+    "image": "/images/people/board.webp",
+    "alt": "Samudra's Board of Directors",
+    "headingLight": "Board of",
+    "headingBold": "Directors"
+  },
+  "directors": [
+    {
+      "photo": "/images/people/hariman-t-zagloel.webp",
+      "name": "Hariman T. Zagloel",
+      "title": "President Director",
+      "nameSide": "right"
+    },
+    {
+      "photo": "/images/people/zen-fuad-noor.webp",
+      "name": "Zen Fuad Noor",
+      "title": "Operational Director",
+      "nameSide": "left"
+    },
+    {
+      "photo": "/images/people/frina-bonita.webp",
+      "name": "Frina Bonita",
+      "title": "Asst. Operational Director",
+      "nameSide": "right"
+    }
+  ],
+  "groups": [
+    {
+      "name": "General Managers",
+      "members": [
+        { "photo": "/images/people/team/mohammad-nur-rizky.webp", "name": "Mohammad Nur Rizky", "title": "Operations General Manager" },
+        { "photo": "/images/people/team/naskah-astriadi.webp", "name": "Naskah Astriadi", "title": "Regional General Manager" }
+      ]
+    },
+    {
+      "name": "Managers",
+      "members": [
+        { "photo": "/images/people/team/rahmat-anwar.webp", "name": "Rahmat Anwar", "title": "Sales & Marketing Manager" },
+        { "photo": "/images/people/team/hari-nugraha.webp", "name": "Hari Nugraha", "title": "Creative & Design Manager" },
+        { "photo": "/images/people/team/mauludin-imam-santoso.webp", "name": "Mauludin Imam Santoso", "title": "Production & Operations Manager" },
+        { "photo": "/images/people/team/khoirullah.webp", "name": "Khoirullah", "title": "Finance & Accounting Manager" },
+        { "photo": "/images/people/team/t-soetarjani-setiabudi.webp", "name": "T. Soetarjani Setiabudi", "title": "Procurement & Logistic Manager" },
+        { "photo": "/images/people/team/anggit-purnomo.webp", "name": "Anggit Purnomo", "title": "HRGA & IT Manager" }
+      ]
+    },
+    {
+      "name": "Branch Managers",
+      "members": [
+        { "photo": "/images/people/team/jeffry-sulistyo.webp", "name": "Jeffry Sulistyo", "title": "Surabaya Branch Manager" },
+        { "photo": "/images/people/team/gede-leo-satria-wijaya.webp", "name": "Gede Leo Satria Wijaya", "title": "Bali Branch Manager" },
+        { "photo": "/images/people/team/harmaizon-dw.webp", "name": "Harmaizon Dw", "title": "Medan Branch Manager" },
+        { "photo": "/images/people/team/andi-eva-st.webp", "name": "Andi Eva. St", "title": "Makassar Branch Manager" }
+      ]
+    }
+  ],
+  "crew": {
+    "image": "/images/people/crew.webp",
+    "alt": "The Samudra team"
+  }
+}

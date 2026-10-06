@@ -1,4 +1,7 @@
-/* Bundled font (self-contained via @fontsource — no external CDN).
-   The same Montserrat variable font OLD loaded from Google Fonts
-   (wght 100–900), so every weight renders exactly as before. */
+/* Bundled fonts (self-contained via @fontsource — no external CDN).
+   Montserrat (variable, wght 100–900) for everything; Roboto Light / Light
+   Italic / Medium for the About copy and the People names, as in the design. */
 @import "@fontsource-variable/montserrat/wght.css";
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/300-italic.css";
+@import "@fontsource/roboto/500.css";

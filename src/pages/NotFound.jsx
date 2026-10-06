@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
-import SectionHeading from "../components/ui/SectionHeading";
-import { useNavigation } from "../hooks/useNavigation";
+import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
+import { block, fluid } from "../utils/design";
+import PageHeading from "../components/ui/PageHeading";
+import RedBar from "../components/ui/RedBar";
+import SpaLink from "../components/ui/SpaLink";
 
 /**
  * Any path React Router does not know. WordPress answers the same paths with
  * a 404 status (samudra_spa_status() in theme/functions.php).
  */
 export default function NotFound() {
-  const { navigateWithFade } = useNavigation();
   const { heading, body, buttonLabel } = useSection("notFound");
 
   // Most pages never set a title, so put the previous one back on the way out.
@@ -22,34 +23,14 @@ export default function NotFound() {
   }, []);
 
   return (
-    <Container maxWidth="xxl" sx={{ py: 8, mt: 10, mb: 10 }}>
-      <SectionHeading title={heading} color="text.secondary" />
-      <Typography
-        mt={4}
-        display={"block"}
-        variant="bodyLarge"
-        color="text.secondary"
-      >
-        {body}
-      </Typography>
-      <Box mt={4}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigateWithFade("/")}
-          sx={{
-            px: 2,
-            py: 0.8,
-            fontWeight: 700,
-            fontSize: "0.8rem",
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
-            borderRadius: 0,
-          }}
-        >
-          {buttonLabel} -&gt;
-        </Button>
+    <Box sx={{ bgcolor: "brand.page", color: "common.white", minHeight: "70vh", pt: { xs: 16, md: fluid(260, 170) }, pb: { xs: 10, md: fluid(160, 90) } }}>
+      <Box sx={block(1532)}>
+        <PageHeading size={55}>{heading}</PageHeading>
+        <Typography sx={{ mt: { xs: 3, md: fluid(30, 20) }, fontSize: { xs: 17, md: fluid(24, 16) }, maxWidth: 720 }}>{body}</Typography>
+        <SpaLink to="/" sx={{ display: "inline-block", mt: { xs: 5, md: fluid(56, 36) }, width: { xs: 240, md: fluid(260, 220) }, "&:hover": { filter: "brightness(1.1)" } }}>
+          <RedBar label={buttonLabel} height={45} fontSize={17} />
+        </SpaLink>
       </Box>
-    </Container>
+    </Box>
   );
 }

@@ -30,7 +30,18 @@ function copyJsonFiles() {
       }
     });
 
-    console.log(`Successfully synced ${copiedCount} JSON files to theme/data.`);
+    // A section removed from src/data must not linger in theme/data.
+    let removedCount = 0;
+    fs.readdirSync(destDir).forEach((file) => {
+      if (path.extname(file).toLowerCase() === ".json" && !files.includes(file)) {
+        fs.unlinkSync(path.join(destDir, file));
+        removedCount++;
+      }
+    });
+
+    console.log(
+      `Successfully synced ${copiedCount} JSON files to theme/data${removedCount ? ` (removed ${removedCount} stale)` : ""}.`,
+    );
   } catch (err) {
     console.error("Error copying JSON files:", err);
     process.exit(1);

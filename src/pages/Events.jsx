@@ -1,95 +1,101 @@
-import { useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Link as MuiLink,
-} from "@mui/material";
-import EventCard from "../components/news/EventCard";
-import { FadeScroll } from "../components/ui/FadeScroll";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { motion, AnimatePresence } from "framer-motion";
-import { fetchEventItems } from "../services/wpApi.js";
+import { useEffect, useState } from "react";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { fetchEventItems } from "../services/wpApi";
 import { useSection } from "../hooks/useSiteData";
-import SectionHeading from "../components/ui/SectionHeading";
+import { cssUrl } from "../utils/cssUrl";
+import { block, fluid } from "../utils/design";
+import PageHeading from "../components/ui/PageHeading";
+import NewsCard from "../components/ui/NewsCard";
 
-// ─── COMPONENT ──────────────────────────────────────────────────────
-export default function Events() {
+// Until the designer's background photo is supplied (Site Content → News
+// Page → Background Image), a dark-to-red wash in the colours of the PDF.
+const PLACEHOLDER_BG = "linear-gradient(180deg, #120E0D 0%, #2A1110 38%, #7E1519 72%, #C41A21 100%)";
+
+const GAP = fluid(38, 20);
+
+/**
+ * /events — newest post as a large lead card, the next two stacked beside
+ * it, everything else three across (New Design.pdf).
+ */
+function Events() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
-  const { heading } = useSection("news");
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const { heading, backgroundImage, buttonLabel, emptyText } = useSection("news");
+  const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch all events (wp-admin → News)
   useEffect(() => {
-    setLoading(true);
+    document.title = "News & Event - Samudra";
     fetchEventItems()
-      .then((items) => setFilteredItems(items))
-      .catch(() => setFilteredItems([]))
-      .finally(() => setLoading(false));
+      .then(setItems)
+      .catch(() => setItems([]))
+      .finally(() => setLoaded(true));
   }, []);
 
-  return (
-    <>
-      <Container maxWidth="xxl" sx={{ pt: { xs: 4, md: 6 } }}>
-        <SectionHeading title={heading} color="text.secondary" sx={{ mt: 10, mb: 0 }} />
-      </Container>
-      
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* Section B — Latest News Release                                        */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <Container maxWidth="xxl" sx={{ py: { xs: 4, md: 6 } }}>
-        {/* <Typography variant="headingMedium" display={"block"} mb={3}>
-          Latest News Release
-        </Typography> */}
+  const card = (news, size = "regular") => (
+    <NewsCard
+      key={news.id}
+      to={`/events/${news.slug}`}
+      image={news.coverImage}
+      date={news.date}
+      title={news.title}
+      description={news.description}
+      buttonLabel={buttonLabel}
+      size={size}
+    />
+  );
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+  const [lead, ...others] = items;
+  const side = desktop ? others.slice(0, 2) : [];
+  const rest = desktop ? others.slice(2) : others;
+
+  return (
+    <Box
+      sx={{
+        background: backgroundImage ? `${cssUrl(backgroundImage)} center top / cover no-repeat, #120E0D` : PLACEHOLDER_BG,
+        color: "common.white",
+        minHeight: "100vh",
+      }}
+    >
+      <Box sx={{ ...block(1551), pt: { xs: 14, md: fluid(220, 150) }, pb: { xs: 8, md: fluid(82, 60) } }}>
+        <PageHeading size={55}>{heading}</PageHeading>
+
+        {loaded && !items.length && <Typography sx={{ mt: 6, opacity: 0.8 }}>{emptyText}</Typography>}
+
+        {lead && (
+          <Box
+            sx={{
+              mt: { xs: 5, md: fluid(120, 60) },
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", md: side.length ? "1018fr 492fr" : "1fr" },
+              gap: GAP,
+            }}
           >
-            {loading ? (
-              <Typography variant="bodyMedium" color="text.secondary">
-                Loading...
-              </Typography>
-            ) : filteredItems.length === 0 ? (
-              <Typography variant="bodyMedium" color="text.secondary">
-                No events found.
-              </Typography>
-            ) : (
-              <Grid container spacing={4}>
-                {filteredItems.map((item, i) => (
-                  <Grid
-                    size={{ xs: 12, sm: 6, md: 6 }}
-                    key={item.id}
-                    sx={{ mb: 2 }}
-                  >
-                    <FadeScroll
-                      delay={(i % (isMobile ? 2 : isTablet ? 3 : 4)) * 0.1}
-                    >
-                      <EventCard
-                        title={item.title}
-                        image={item.coverImage}
-                        date={item.date}
-                        description={item.description}
-                        slug={item.slug}
-                        index={i}
-                      />
-                    </FadeScroll>
-                  </Grid>
-                ))}
-              </Grid>
+            {card(lead, desktop ? "featured" : "regular")}
+            {side.length > 0 && (
+              <Box sx={{ display: "grid", gridTemplateRows: `repeat(${side.length}, 1fr)`, gap: fluid(31, 20) }}>
+                {side.map((news) => card(news))}
+              </Box>
             )}
-          </motion.div>
-        </AnimatePresence>
-      </Container>
-    </>
+          </Box>
+        )}
+
+        {rest.length > 0 && (
+          <Box
+            sx={{
+              mt: { xs: 4, md: fluid(51, 32) },
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
+              columnGap: GAP,
+              rowGap: { xs: 4, md: fluid(47, 28) },
+            }}
+          >
+            {rest.map((news) => card(news))}
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 }
+
+export default Events;

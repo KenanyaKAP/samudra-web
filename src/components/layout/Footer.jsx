@@ -1,184 +1,151 @@
-import { Box, Container, Typography, Link as MuiLink } from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
+import { Box, Typography, Link as MuiLink, SvgIcon } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { YouTube } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import { useSection } from "../../hooks/useSiteData";
 import OfficeBlock from "../ui/OfficeBlock";
-import { pairs } from "../../utils/offices";
+import { block, fluid, WIDE } from "../../utils/design";
 
-// Site Content → Global → Footer → Socials → Platform
-const SOCIAL_ICONS = {
-  facebook: FacebookIcon,
-  instagram: InstagramIcon,
-  youtube: YouTube,
-  linkedin: LinkedInIcon,
-};
-
-function Divider({ mb }) {
+/** The plain "f" of the design (MUI's Facebook icon is the round badge). */
+function FacebookIcon(props) {
   return (
-    <Box
-      mt={2}
-      mb={mb}
-      sx={{
-        width: "100%",
-        height: "1px",
-        bgcolor: "white",
-        borderRadius: "2px",
-      }}
-    />
+    <SvgIcon {...props} viewBox="0 0 24 24">
+      <path d="M14.2 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.6-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H8v3.2h2.8V22h3.4z" />
+    </SvgIcon>
   );
 }
 
+// Site Content → Global → Footer → Socials → Platform
+const SOCIAL_ICONS = {
+  linkedin: LinkedInIcon,
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  youtube: YouTubeIcon,
+};
+
+const labelSx = {
+  fontSize: fluid(28, 20),
+  fontWeight: 700,
+  textTransform: "uppercase",
+  color: "common.white",
+  lineHeight: 1.2,
+};
+
+/**
+ * Site footer (New Design.pdf): headquarter on the left, the branch offices
+ * in two columns on the right, one rule across both, then the logo,
+ * copyright and social links.
+ */
 function Footer() {
-  const location = useLocation();
   const { logo, offices = {}, footer = {} } = useSection("global");
   const branches = offices.branches || [];
-  const socialLinks = (footer.socials || []).filter(
-    (social) => SOCIAL_ICONS[social.platform],
-  );
+  const socials = (footer.socials || []).filter((s) => SOCIAL_ICONS[s.platform] && s.url);
 
   return (
-    <Box component="footer" bgcolor={"#373737"}>
-      {/* Top section - dark */}
-      <Container
-        maxWidth={"xxl"}
-        sx={{
-          py: 6,
-        }}
-      >
-        {location.pathname !== "/contact" && (
-          <Box
-            display="flex"
-            flexDirection={{ xs: "column", md: "row" }}
-            gap={4}
-            mb={6}
-          >
-            <Box flex={1}>
-              <Typography
-                variant="headingSmall"
-                color="text.light"
-                fontWeight={700}
-              >
-                {footer.headquarterLabel}
-              </Typography>
+    <Box component="footer" sx={{ bgcolor: "brand.charcoal", color: "common.white" }}>
+      <Box sx={{ ...block(WIDE), pt: { xs: 7, lg: fluid(170, 80) }, pb: { xs: 5, lg: fluid(70, 40) } }}>
+        {/* Labels + one rule across both columns */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "grid" },
+            gridTemplateColumns: "901fr 879fr",
+            pb: fluid(26, 16),
+            borderBottom: "1px solid rgba(255,255,255,0.85)",
+          }}
+        >
+          <Typography component="h2" sx={labelSx}>
+            {footer.headquarterLabel}
+          </Typography>
+          <Typography component="h2" sx={labelSx}>
+            {footer.branchLabel}
+          </Typography>
+        </Box>
 
-              {/* Horizontal line */}
-              <Divider mb={3} />
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "901fr 879fr" },
+            rowGap: 5,
+            mt: { xs: 0, md: fluid(36, 24) },
+          }}
+        >
+          <Box>
+            <Typography
+              component="h2"
+              sx={{ ...labelSx, display: { md: "none" }, pb: 2, mb: 3, borderBottom: "1px solid rgba(255,255,255,0.85)" }}
+            >
+              {footer.headquarterLabel}
+            </Typography>
+            <OfficeBlock office={offices.headquarter} />
+          </Box>
 
-              <Box>
-                <OfficeBlock office={offices.headquarter} />
-              </Box>
-            </Box>
-
-            <Box flex={1.3}>
-              <Typography
-                variant="headingSmall"
-                color="text.light"
-                fontWeight={700}
-              >
-                {footer.branchLabel}
-              </Typography>
-
-              {/* Horizontal line */}
-              <Divider mb={4} />
-
-              {pairs(branches).map((row, rowIndex) => (
-                <Box
-                  key={rowIndex}
-                  display={"flex"}
-                  gap={4}
-                  mt={rowIndex > 0 ? 4 : undefined}
-                  flexDirection={{
-                    xs: "column",
-                    sm: "row",
-                  }}
-                >
-                  {row.map((office, i) => (
-                    <Box flex={1} key={(office.city || "") + i}>
-                      <OfficeBlock office={office} />
-                    </Box>
-                  ))}
-                </Box>
+          <Box>
+            <Typography
+              component="h2"
+              sx={{ ...labelSx, display: { md: "none" }, pb: 2, mb: 3, borderBottom: "1px solid rgba(255,255,255,0.85)" }}
+            >
+              {footer.branchLabel}
+            </Typography>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "426fr 453fr" },
+                columnGap: 3,
+                rowGap: { xs: 4, md: fluid(44, 28) },
+              }}
+            >
+              {branches.map((office, i) => (
+                <OfficeBlock key={(office.city || "") + i} office={office} />
               ))}
             </Box>
           </Box>
-        )}
+        </Box>
 
+        {/* Logo + copyright | Connect with us */}
         <Box
-          display={"flex"}
-          flexDirection={{
-            xs: "column-reverse",
-            sm: "row",
+          sx={{
+            mt: { xs: 7, lg: fluid(100, 56) },
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-start", md: "flex-end" },
+            justifyContent: "space-between",
+            gap: 4,
           }}
-          alignItems={{
-            xs: "start",
-            sm: "end",
-          }}
-          gap={6}
         >
-          <Box flex={1}>
+          <Box>
             <Box
-              component={"img"}
+              component="img"
               src={logo}
-              alt="Logo"
-              sx={{
-                width: "80%",
-                maxWidth: "400px",
-                height: "auto",
-                mb: 2,
-              }}
+              alt="Samudra"
+              sx={{ width: { xs: 260, md: fluid(517, 300) }, height: "auto", display: "block" }}
             />
-            <Typography
-              variant="bodySmall"
-              color="text.light"
-              display={"block"}
-            >
-              {footer.copyright}
-            </Typography>
+            <Typography sx={{ mt: fluid(82, 24), fontSize: fluid(16, 13) }}>{footer.copyright}</Typography>
           </Box>
-          <Box
-            flex={1.3}
-            display={"flex"}
-            flexGrow={1}
-            justifyContent={"end"}
-            flexDirection={"row"}
-            alignItems={"center"}
-            gap={4}
-          >
-            <Typography
-              variant="headingSmall"
-              color="text.light"
-              display={"block"}
-            >
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: fluid(34, 20), mb: { md: fluid(24, 8) } }}>
+            <Typography sx={{ fontSize: fluid(26, 18), fontWeight: 600, textTransform: "uppercase" }}>
               {footer.connectLabel}
             </Typography>
-
-            {/* Social Icons */}
-            <Box display="flex" gap={2}>
-              {socialLinks.map((social, index) => {
-                const IconComponent = SOCIAL_ICONS[social.platform];
+            <Box sx={{ display: "flex", alignItems: "center", gap: fluid(16, 10) }}>
+              {socials.map((social, i) => {
+                const Icon = SOCIAL_ICONS[social.platform];
                 return (
                   <MuiLink
-                    key={index}
+                    key={social.platform + i}
                     href={social.url}
                     target="_blank"
-                    sx={{
-                      color: "text.light",
-                      opacity: 0.7,
-                      transition: "opacity 0.2s",
-                      "&:hover": { opacity: 1 },
-                    }}
+                    rel="noopener noreferrer"
+                    aria-label={social.platform}
+                    sx={{ color: "common.white", display: "flex", "&:hover": { color: "primary.main" } }}
                   >
-                    <IconComponent sx={{ fontSize: "28px" }} />
+                    <Icon sx={{ fontSize: fluid(40, 28) }} />
                   </MuiLink>
                 );
               })}
             </Box>
           </Box>
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 }

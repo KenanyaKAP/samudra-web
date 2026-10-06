@@ -1,24 +1,26 @@
 {
   "logo": "/images/logo-white.png",
   "nav": [
-    { "label": "Home", "path": "/", "children": [] },
-    {
-      "label": "About",
-      "path": "/about",
-      "children": [
-        { "label": "Samudra History", "path": "/about/history" },
-        { "label": "About Samudra", "path": "/about/company" },
-        { "label": "Vision & Mission", "path": "/about/vision" },
-        { "label": "Core Values", "path": "/about/values" },
-        { "label": "Board of Management", "path": "/about/management" },
-        { "label": "Awards", "path": "/about/awards" }
-      ]
-    },
-    { "label": "Services", "path": "/services", "children": [] },
-    { "label": "News", "path": "/events", "children": [] },
-    { "label": "Contact", "path": "/contact", "children": [] },
-    { "label": "Career", "path": "/career", "children": [] }
+    { "label": "Home", "path": "/" },
+    { "label": "About", "path": "/about" },
+    { "label": "Services", "path": "/services" },
+    { "label": "People", "path": "/people" },
+    { "label": "News", "path": "/events" },
+    { "label": "Contact Us", "path": "/contact" },
+    { "label": "Career", "path": "/career" }
   ],
+  "search": {
+    "placeholder": "Search news and projects…",
+    "newsLabel": "News",
+    "projectsLabel": "Projects",
+    "emptyText": "No results for this search."
+  },
+  "whatsapp": {
+    "number": "",
+    "title": "Tell us about your project",
+    "subtitle": "Chat with Samudra",
+    "message": "Hello Samudra, I would like to discuss a project."
+  },
   "offices": {
     "headquarter": {
       "city": "Jakarta",
@@ -27,8 +29,9 @@
         "Gedung Graha Inti 5th Floor",
         "Jl Raya Kalimalang No 87 Jakarta 13430 Indonesia"
       ],
-      "phones": ["+6221 8604622", "+6221 50813122"],
-      "fax": ["+6221 8626128"],
+      "phones": ["+622139712789", "+622138850789"],
+      "mobile": [],
+      "fax": [],
       "email": "info@samudra.co.id"
     },
     "branches": [
@@ -36,6 +39,7 @@
         "city": "Surabaya",
         "address": ["Jl. Karah No. 9A", "Surabaya 60232 Indonesia"],
         "phones": ["+6231 8288288"],
+        "mobile": [],
         "fax": ["+6231 8271951"],
         "email": "surabaya@samudra.co.id"
       },
@@ -43,13 +47,15 @@
         "city": "Bali",
         "address": ["Jl. Pintas Siligita No. 12A", "Bali 80361 Indonesia"],
         "phones": ["+62361 4728959"],
-        "fax": ["+62361 777679"],
+        "mobile": [],
+        "fax": [],
         "email": "bali@samudra.co.id"
       },
       {
         "city": "Medan",
-        "address": ["Jl. Badur No.5 Hamdan, Medan Maimun", "Medan 20151 Indonesia"],
-        "phones": ["+62819 05030981", "+62812 69715776"],
+        "address": ["Jl Badur No 5, Hamdan, Medan Maimun,", "Medan, Sumatra Utara 20151"],
+        "phones": ["+6261 6647 5226"],
+        "mobile": ["+62812 69715776"],
         "fax": [],
         "email": "medan@samudra.co.id"
       },
@@ -57,6 +63,7 @@
         "city": "Makassar",
         "address": ["Jl. Sultan Alauddin I No. 19", "Makassar 90223 Indonesia"],
         "phones": ["+62411 856221", "+62823 45303293"],
+        "mobile": [],
         "fax": [],
         "email": "makassar@samudra.co.id"
       }
@@ -66,8 +73,9 @@
     "headquarterLabel": "OUR HEADQUARTER",
     "branchLabel": "BRANCH OFFICE",
     "connectLabel": "CONNECT WITH US",
-    "copyright": "© 2026, Samudra Dyan Praga. All rights reserved.",
+    "copyright": "© Copyright 2026, Samudra Dyan Praga.  All rights reserved.",
     "socials": [
+      { "platform": "linkedin", "url": "https://linkedin.com" },
       { "platform": "facebook", "url": "https://facebook.com" },
       { "platform": "instagram", "url": "https://instagram.com" },
       { "platform": "youtube", "url": "https://youtube.com" }

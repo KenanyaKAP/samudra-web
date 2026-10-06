@@ -2,90 +2,69 @@
   "hero": {
     "slides": [
       {
+        "image": "/images/home/hero-osaka.webp",
+        "heading": "We are the official contractor\nof the Indonesia Pavilion\nat Osaka Expo 2025."
+      },
+      {
         "image": "/images/home/hero1.jpg",
-        "heading": "Beyond Expectations, Delivering Excellence Globally",
-        "subtitle": "Your Premier Partner for World-Class Exhibition Booth Construction"
+        "heading": "Beyond Expectations, Delivering Excellence Globally"
       },
       {
         "image": "/images/home/hero2.jpeg",
-        "heading": "Creating Better Results for Global Events of Any Size",
-        "subtitle": "Full Supporting Contractor for Mega-Exhibitions and Large-Scale Booths"
+        "heading": "Creating Better Results for Global Events of Any Size"
       },
       {
         "image": "/images/home/hero3.jpeg",
-        "heading": "Always Different, Always Exceptional",
-        "subtitle": "Innovative Design Construction for High-Impact Booths"
+        "heading": "Always Different, Always Exceptional"
       }
-    ],
-    "buttonLabel": "MORE",
-    "buttonLink": "/services"
+    ]
   },
   "about": {
     "heading": "About",
-    "body": "SAMUDRA was established in Jakarta in 1984 with the aim of providing superior exhibition construction services to clients based in Indonesia. The company's scope of business was steadily expanded to provide full exhibition management services to clients participating in domestic and overseas expositions, trade fairs and exhibitions, conventions and seminars.",
-    "buttonLabel": "Read More ->",
+    "graphicImage": "/images/home/redefining-experiences.webp",
+    "graphicAlt": "Redefining Experiences",
+    "buttonLabel": "Read More",
     "buttonLink": "/about",
-    "backgroundImage": "/images/home/home1.png"
+    "backgroundImage": "/images/home/about-bg.webp"
   },
   "services": {
     "heading": "Service",
-    "backgroundImage": "/images/home/home2.png",
+    "backgroundImage": "/images/home/service-bg.webp",
+    "buttonLabel": "More",
     "items": [
       {
         "title": "Exhibition Construction",
-        "image": "/images/home/service1.png",
+        "image": "/images/services/exhibition-construction.webp",
         "description": "From concept to execution, we create impactful exhibition experiences with our comprehensive design and construction services.",
         "category": "exhibition-construction"
       },
       {
+        "title": "Special Project",
+        "image": "/images/services/special-project.webp",
+        "description": "Certified event management experts delivering seamless execution for seminars, conventions, exhibitions, and specialty events.",
+        "category": "special-project"
+      },
+      {
         "title": "Tent Service",
-        "image": "/images/home/service2.png",
+        "image": "/images/services/tent-service.webp",
         "description": "Leading provider of mobile outdoor solutions for corporate events, sports, hospitality, and exhibitions across Indonesia.",
         "category": "tent-service"
       },
       {
-        "title": "Special Projects",
-        "image": "/images/home/service3.png",
-        "description": "Certified event management experts delivering seamless execution for seminars, conventions, exhibitions, and specialty events.",
-        "category": "special-projects"
-      },
-      {
         "title": "Interior Design & Build",
-        "image": "/images/home/service4.png",
+        "image": "/images/services/interior-design-build.webp",
         "description": "Creative interior design and build solutions for residential, showroom, and office spaces with professional quality.",
         "category": "interior-design-build"
       }
     ]
   },
-  "testimonials": {
-    "heading": "Client Testimonials",
-    "items": [
-      {
-        "image": "/images/home/profile.webp",
-        "title": "Lorem Ipsum",
-        "location": "Made In Moscow",
-        "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-      },
-      {
-        "image": "/images/home/profile.webp",
-        "title": "Lorem Ipsum",
-        "location": "Westingarea",
-        "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-      },
-      {
-        "image": "/images/home/profile.webp",
-        "title": "John Smith",
-        "location": "New York",
-        "text": "The team at Samudra delivered an exceptional exhibition experience. Their attention to detail and professional execution made our event a tremendous success."
-      }
-    ]
-  },
   "news": {
     "heading": "News",
-    "backgroundImage": "/images/career/hero.png"
+    "backgroundImage": "/images/home/news-bg.webp",
+    "buttonLabel": "Read More"
   },
-  "partner": {
-    "heading": "YOUR EXHIBITION PARTNER",
-    "mapImage": "/images/home/maps.png"
+  "map": {
+    "mapImage": "/images/home/map.webp",
+    "alt": "Samudra offices across Indonesia: Jakarta, Surabaya, Bali, Medan and Makassar"
   }
 }

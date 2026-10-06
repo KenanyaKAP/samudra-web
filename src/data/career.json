@@ -1,12 +1,42 @@
 {
-  "heading": "Careers",
-  "intro": "Navigate your career toward new horizons and discover your true potential with us. At Samudra, we believe that a solid team is the foundation of every magnificent structure we build. Join us and leave your mark on the world’s greatest exhibition stages.",
-  "joinCard": {
-    "image": "/images/career/hero.png",
-    "title": "JOIN OUR TEAM",
-    "paragraphs": [
-      "PT Samudra Dyan Praga is a professional exhibition contractor company. We are looking for passionate, talented, and motivated individuals to grow with us.",
-      "Explore our current job openings and become part of our team."
-    ]
+  "heading": "Current Openings",
+  "heroImage": "/images/career/hero.webp",
+  "emptyText": "There are no open positions right now. You are welcome to send a general application below.",
+  "applyLabel": "Apply",
+  "closesLabel": "Application closes at",
+  "form": {
+    "heading": "Career\nApplication Form",
+    "intro": "Ready to help create experiences that make an impact? Tell us about yourself and the role you are interested in.",
+    "documentTitle": "Build Your Career with Samudra",
+    "fields": {
+      "firstName": { "label": "First Name", "placeholder": "e.g. John" },
+      "lastName": { "label": "Last Name", "placeholder": "e.g. Doe" },
+      "email": { "label": "Email Address", "placeholder": "e.g. john@company.com" },
+      "phone": { "label": "Phone / WhatsApp Number", "placeholder": "e.g. +62 812 34567890" },
+      "position": { "label": "Position Applied For", "placeholder": "Select a position" },
+      "location": { "label": "Current Location", "placeholder": "e.g. Jakarta, Indonesia" },
+      "jobTitle": { "label": "Current / Most Recent Job Title", "placeholder": "e.g. Project Manager" },
+      "experience": { "label": "Years of Relevant Experience", "placeholder": "e.g. 5" },
+      "linkedin": { "label": "LinkedIn Profile URL", "placeholder": "e.g. https://www.linkedin.com/in/john" },
+      "portfolioUrl": { "label": "Portfolio Website / Link", "placeholder": "e.g. https://www.behance.net/john" },
+      "motivation": { "label": "Why would you like to join Samudra?", "placeholder": "Tell us about your motivation, relevant experience, and what you can contribute to our team." },
+      "resume": {
+        "label": "Resume / CV",
+        "uploadTitle": "Click to upload files or drag and drop",
+        "uploadFormats": "PDF or DOC (Max 10MB each)"
+      },
+      "portfolioFile": {
+        "label": "Portfolio",
+        "uploadTitle": "Click to upload files or drag and drop",
+        "uploadFormats": "PDF or DOC (Max 10MB each)"
+      }
+    },
+    "generalApplicationLabel": "General Application",
+    "consent": "I agree that PT Samudra Dyan Praga may use my personal information and application documents for recruitment purposes. I have read the",
+    "privacyLinkLabel": "Privacy Policy",
+    "submitLabel": "Submit Application",
+    "successTitle": "Thank you for applying to Samudra",
+    "successBody": "We have received your application. Our recruitment team will contact you if your qualifications match a current opportunity.",
+    "errorText": "Your application could not be sent. Please try again in a moment, or email us at info@samudra.co.id."
   }
 }

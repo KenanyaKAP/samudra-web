@@ -1,6 +1,11 @@
 {
   "heading": "Services",
+  "allLabel": "All",
   "intro": "Special Projects Division as a Professional Convention and Event’s Management Organizer is a certified Professional Convention Organizer (PCO). The certificate was issued by Jakarta Tourism & Culture Office for companies whose expertise in managing events: seminars, conventions, exhibitions, and other specialty events.",
+  "buttonLabel": "More",
+  "emptyText": "No projects in this category yet.",
+  "backLabel": "Back",
+  "nextLabel": "Next",
   "brands": {
     "heading": "Powering Leading Brands",
     "body": "We’ve navigated countless projects with clients from every industry. Together, we build environments that leave a lasting impact and drive real results.",

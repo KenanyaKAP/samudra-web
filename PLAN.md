@@ -3,6 +3,11 @@
 Status: **built** (2026-10-05). See §9 for where the result differs from this
 plan and what was verified.
 
+> **Superseded for the UI by the redesign (§10).** The rebuild below matched
+> OLD pixel for pixel; the site was then redesigned from `New Design.pdf`.
+> The architecture (§1–§3) is unchanged. Routes, sections and the look are
+> described in §10.
+
 Rebuild `samudra-web-OLD/` at the repo root (`./`) on the hybrid
 **WordPress + React** architecture of the reference projects: the
 `EXAMPLE-READ-ONLY-4` (Infinium) skeleton and admin editor, plus the
@@ -401,3 +406,101 @@ Differences between this plan and what was actually shipped, and why.
   box gallery (remove one image) and description save correctly.
 - `npm run wp:seed-demo` is idempotent (re-run leaves 12 / 9 / 3 / 1 media).
   `npm run wp:reseed` rejects unknown keys.
+
+---
+
+## 10. Redesign from `New Design.pdf` (2026-10-05)
+
+The designer delivered `New Design.pdf` (one Illustrator page holding nine
+1920 px desktop artboards: Home, About, Services, portfolio detail, People,
+News, news detail, Request a Proposal, Career) and `New Design Assets/`
+(raw PNG/JPG + the copy in .docx). Neither folder is committed.
+
+### 10.1 Decisions
+
+| Topic | Decision |
+|---|---|
+| Language | Still English only. The "EN" switch of the design is not shown. |
+| Navigation | HOME, ABOUT, SERVICES, PEOPLE, NEWS, CONTACT US, CAREER + search. No dropdowns. |
+| About | One page: CEO message, Vision & Mission, About Samudra (40 years), Strategic Alliance, Warehouse. The six sub-pages are gone; `/about/{history,company,vision,values,awards}` → 301 `/about`, `/about/management` → 301 `/people`. |
+| People | New `/people`: Board of Directors, three directors full width, managers and branch managers as portraits cut per person out of the group shots (editable in Site Content → People), crew photo. |
+| Home | Hero carousel (design slide + three earlier slides), About "Redefining Experiences", Service cards, News carousel, office map. Testimonials removed. |
+| Services | Filter chips + category text + grid of **portfolio projects** (the design repeats the four category cards as filler). Cards are black-and-white until hovered (always colour on touch screens). |
+| Details | Portfolio and news share one layout. Portfolio subtitle = category, news subtitle = date. Portfolio gallery as a grid + lightbox under the text. BACK / NEXT = neighbours in list order. |
+| Forms | Request a Proposal (`/contact`) and Career Application (`/career`): fields and copy from the .docx specs (Scale, Budget, Date are free text). Stored in wp-admin with attachments + e-mail notification. Privacy link → new `/privacy-policy` (placeholder text). |
+| Career | Cards with photo, location / type / level, closing date; only open positions are listed and offered in the form. APPLY scrolls to the form with that position selected. |
+| WhatsApp | Floating "Tell us about your project" button on every page, shown once a number is set in Site Content → Global. |
+| Search | Navbar search over News + Portfolios (`/wp/v2/search`). |
+| Offices | Phone numbers from the design (Jakarta, Medan changed; no fax for Jakarta, Bali), "HP" line added, LinkedIn added. |
+| Categories | "Special Project" (was "Special Projects"), "Tent Service". |
+| Assets | WebP via `npm run assets:build` (sharp): backgrounds 2560 px at q92 (lower smoothed their grain), photos q88, graphics q90 with alpha. 211 MB of sources → ~5 MB. Unused images of the old design deleted (57 MB → 7.9 MB). |
+| Demo data | `wp:seed-demo` now holds the design's 9 news, 4 positions and the Indonesia Pavilion project (+ OLD's 12 mock portfolios so every category has projects). |
+
+### 10.2 Corrections to the design (applied)
+
+1. The two detail artboards still show the old navbar; the new one is used everywhere.
+2. The design swaps the texts of the Tent Service and Interior Design & Build cards; the correct texts are used.
+3. Card buttons all read "MORE" (the design mixes READ MORE / MORE).
+4. Leftover layers ignored: a tiny "Lorem ipsum" in the CEO block, a hidden "YOUR EXHIBITION PARTNER".
+5. "e.g. Jhon" → "e.g. John".
+6. The Career form shows the intro from the .docx; its button, consent and success texts come from the .docx (the design reused the proposal texts).
+7. Office lines are formatted consistently: `Phone :`, `HP :`, `Fax :`, `Email :`.
+
+### 10.3 As built
+
+- **Responsive approach**: `src/utils/design.js` — `fluid(px, min)` is the
+  design value at 1920 that scales with the viewport and stops at a minimum;
+  `block(px)` centres a design-width block with gutters on small screens.
+  Pages whose frames are positioned absolutely (About) only use that layout
+  from 1200 px; below it the parts stack.
+- **Forms backend** (`theme/inc/forms.php`): `POST samudra/v1/forms/{proposal,application}`,
+  server-side validation (required, e-mail, URL, max lengths, dropdown values,
+  file type by content + extension, 10 MB per file, 5 documents), honeypot +
+  3-second minimum, 5 submissions / 10 min / IP. Private CPTs
+  `proposal_request` / `job_application`; files in
+  `uploads/samudra-forms/` (`Require all denied`), downloaded by admins via
+  `admin-post.php`; deleted with the submission. Recipients in Site Content
+  → Form Settings (option `samudra_form_settings`, not exposed over REST;
+  empty → site admin e-mail). SMTP through `SAMUDRA_SMTP_*` constants or a
+  plugin such as WP Mail SMTP.
+- **Local Docker**: `mailpit` service (http://localhost:8025) receives all
+  mail; `docker/php/uploads.ini` raises PHP's upload limits to 10 MB / 64 MB.
+- **Upgrade step** `samudra_maybe_upgrade()` (schema v2): deletes the six old
+  About options, renames the Special Projects category, flushes rewrites.
+  Sections whose structure changed keep their old stored values, so an
+  existing install must run `npm run wp:reseed` (or Reset to Default per
+  section) once.
+- **Fixes found while verifying**:
+  - The CLI scripts ran as root, so the first media import created
+    `wp-content/uploads` owned by root and every later upload (Media Library,
+    form attachments) failed. They now run as `www-data`.
+  - WordPress texturized titles (" - " → "–"), so titles differed from the
+    design and from the Position dropdown values; `wptexturize` is removed
+    from `the_title`.
+  - The demo seeder stored `&amp;` in titles (kses runs without a user);
+    it now disables kses.
+  - The honeypot used MUI's `width: 1` (= 100%), adding blank space under
+    the footer of both form pages.
+
+### 10.4 Verified
+
+- `npm run lint`, `npm run build`, `npm run build:wp`; `php -l` on every theme file.
+- 1920 px: every page compared side by side with its artboard (`pdftoppm`
+  render at 72 dpi = 1:1). Remaining differences: browser vs Illustrator
+  glyph widths, images still missing from the assets folder, real content
+  instead of the design's repeated sample cards.
+- 390 / 768 / 1000 / 1200 / 1280 / 1366 px: no horizontal overflow; About,
+  hero and quote marks fixed at the in-between widths.
+- No failed requests (images, fonts, REST) on any page.
+- Routes: new pages 200, unknown paths/slugs 404, six legacy URLs 301.
+- Forms over HTTP and in a real browser: valid submissions stored with files,
+  e-mail in Mailpit with Reply-To, field errors (required, e-mail, URL, wrong
+  option, closed position, fake PDF, > 10 MB), honeypot, too-fast, rate limit
+  (6th → 429), direct file URL → 403, admin download works, success panel
+  scrolls into view.
+- Career: a position past its closing date disappears from the list and the
+  dropdown; APPLY selects the position and scrolls to the form.
+- Search ("osaka" → one news + one project), BACK / NEXT order, WhatsApp link.
+- wp-admin: Proposal Requests / Applications lists and detail, Form Settings
+  (invalid addresses dropped), Career "Closes" column, People rows titled by
+  name, `nameSide` dropdown.

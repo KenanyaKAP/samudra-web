@@ -1,41 +1,45 @@
 {
-  "heading": "About Brand",
-  "items": [
-    {
-      "title": "Samudra History",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/hts.png",
-      "link": "/about/history"
-    },
-    {
-      "title": "About Samudra",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/about.png",
-      "link": "/about/company"
-    },
-    {
-      "title": "Vision & Mision",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/hero.png",
-      "link": "/about/vision"
-    },
-    {
-      "title": "Core Values",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/ospi.png",
-      "link": "/about/values"
-    },
-    {
-      "title": "Board of Management",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/people/president.png",
-      "link": "/about/management"
-    },
-    {
-      "title": "Awards",
-      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod",
-      "image": "/images/about/osi-9001.png",
-      "link": "/about/awards"
-    }
-  ]
+  "ceo": {
+    "photo": "/images/about/ceo.webp",
+    "quote": "After more than 40 years serving the exhibition industry, SAMUDRA has grown into a company with a greater understanding of the needs of our valued clients. Experience has been the best teacher and past failures have made us wiser in our thoughts and actions.",
+    "headingLight": "Message\nFrom",
+    "headingBold": "The CEO",
+    "name": "Hariman T. Zagloel",
+    "title": "President Director",
+    "body": "Many people have very specific ideas about what makes a perfect event. We have what it takes to turn these ideas into reality. SAMUDRA operates three interrelated divisions - Special Projects Division as professional MICE organizer, Exhibition Constructions Division, Tent and Mobile Structures Division; offers a wide range of services supported by a solid team of experts with functional and high quality equipment for unlimited design possibilities.\n\nFor Special Projects Division as a Professional Convention and Event’s Management Organizer company based in Jakarta, that brings a new breath of air in all phases of designing, managing and executing of Meetings-Incentives-Congress-Exhibition, Road Show-Business Travel and Government Sponsored Promotion Mission and trade show on a local, national and international scale, organized spanning the country and across the world.\n\nAnd becoming an Octanorm Service Partner International (OSPI) also gave us many advantages to better serve our clients. Working with our partners from the strong network of OSPI members in 55 countries, SAMUDRA is able to serve clients almost anywhere in the world. In line with SAMUDRA’s vision, “To be a world-class creator, revolutionizing exhibitions into legacy-defining experiences,” our mission is to help every client succeed through smart concepts, superior service, and high-quality execution, while delivering maximum cost effectiveness. Guided by our tagline, “Defining Experiences,” we create exhibitions and events that make a lasting impact. We save on everything, except quality."
+  },
+  "vision": {
+    "backgroundImage": "/images/about/vision-bg.webp",
+    "headingAccent": "Our Vision",
+    "headingBold": "& Mission",
+    "body": "Our vision is to be a world-class creator, revolutionizing exhibitions into legacy-defining experiences.\n\nOur mission is to help every client succeed through smart concepts, superior service, and high-quality execution, while delivering maximum cost effectiveness. We continually develop our people, strengthen our capabilities, and raise our standards to create exhibitions and events that deliver lasting value in Indonesia and around the world."
+  },
+  "company": {
+    "backgroundImage": "/images/about/company-bg.webp",
+    "heading": "About Samudra",
+    "body": "SAMUDRA was established in Jakarta in 1984 with the aim of providing superior exhibition construction services to clients based in Indonesia. The company’s scope of business was steadily expanded to provide full exhibition management services to clients participating in domestic and overseas expositions, trade fairs and exhibitions, conventions and seminars.",
+    "badgeImage": "/images/about/40-years.webp",
+    "badgeAlt": "For more than 40 years"
+  },
+  "alliance": {
+    "heading": "Strategic Alliance",
+    "items": [
+      {
+        "logo": "/images/about/ospi.webp",
+        "logoAlt": "Member of Octanorm Service Partner International (OSPI)",
+        "title": "Octanorm Service Partner (OSPI)",
+        "body": "The company’s competitive edge in the exhibition industry was strengthened in 1994 with SAMUDRA becoming an official member of Octanorm Service Partner International (OSPI), a worldwide network of 151 highly qualified modular exhibition system providers and contractors in 55 countries that guarantee the same quality of service at any exhibition anywhere in the world. SAMUDRA is proud to be the sole Octanorm Service Partner International (OSPI Member) in Indonesia."
+      },
+      {
+        "logo": "/images/about/roder-losberger.webp",
+        "logoAlt": "Röder HTS and Losberger",
+        "title": "Roders HTS Losberger",
+        "body": "Samudra tent has been supported by Roders HTS and Losberger GmbH, the world leaders in manufacture and distribution of mobile structures. We also can provide special design of membrane structure."
+      }
+    ]
+  },
+  "warehouse": {
+    "image": "/images/about/warehouse.webp",
+    "alt": "Warehouse of 14.000 sqm: Octanorm R8 5.400 sqm, Maxima 7.200 sqm, Tent 20.000 sqm, Tribune 1440 seats"
+  }
 }

@@ -1,179 +1,184 @@
-import { Box, Typography, Container } from "@mui/material";
-import { FadeScroll } from "../components/ui/FadeScroll";
+import { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
-import { filled, officeContactLines } from "../utils/offices";
+import { block, fluid } from "../utils/design";
+import PageHeading from "../components/ui/PageHeading";
+import HeroBackdrop from "../components/ui/HeroBackdrop";
+import {
+  Consent,
+  Field,
+  FieldGrid,
+  FileDropzone,
+  FormPanel,
+  Honeypot,
+  SelectInput,
+  SubmitButton,
+  SuccessPanel,
+  TextArea,
+  TextInput,
+} from "../components/forms/FormParts";
+import { check, useFormSubmit } from "../components/forms/useFormSubmit";
 
-export default function Contact() {
-  const contact = useSection("contact");
-  const { offices = {} } = useSection("global");
-  const headquarters = offices.headquarter || {};
-  const branchOffices = offices.branches || [];
+// Request for Proposal Form.docx: what is required, what is optional.
+const REQUIRED = ["company", "contactPerson", "email", "phone", "service", "projectName", "location", "date", "scale", "budget", "brief", "consent"];
+const TEXT_FIELDS = ["company", "contactPerson", "jobTitle", "email", "phone", "service", "projectName", "location", "date", "scale", "budget", "source", "brief"];
+const BRIEF_MAX = 2000;
+
+const INITIAL = Object.fromEntries([...TEXT_FIELDS.map((k) => [k, ""]), ["documents", []], ["consent", false], ["website", ""]]);
+
+/** /contact — Request a Proposal (wp-admin → Proposal Requests). */
+function Contact() {
+  const { heading, intro, heroImage, form = {} } = useSection("contact");
+  const f = form.fields || {};
+  const label = (k) => f[k]?.label;
+
+  const { values, setValue, errors, status, message, onSubmit } = useFormSubmit("proposal", INITIAL, {
+    validate: (v) =>
+      check(v, { required: REQUIRED, emails: ["email"] }, Object.fromEntries(TEXT_FIELDS.map((k) => [k, label(k)]))),
+    build: (v) => {
+      const data = new FormData();
+      TEXT_FIELDS.forEach((k) => data.append(k, v[k].trim()));
+      data.append("consent", v.consent ? "1" : "");
+      v.documents.forEach((file) => data.append("documents[]", file));
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    document.title = "Request a Proposal - Samudra";
+  }, []);
+
+  const input = (name, extra = {}) => (
+    <Field id={`f-${name}`} label={label(name)} required={REQUIRED.includes(name)} error={errors[name]} {...(extra.field || {})}>
+      {extra.render ? (
+        extra.render
+      ) : (
+        <TextInput
+          id={`f-${name}`}
+          name={name}
+          value={values[name]}
+          onChange={setValue}
+          placeholder={f[name]?.placeholder}
+          required={REQUIRED.includes(name)}
+          error={errors[name]}
+          {...(extra.input || {})}
+        />
+      )}
+    </Field>
+  );
+
+  const select = (name, options) =>
+    input(name, {
+      render: (
+        <SelectInput
+          id={`f-${name}`}
+          name={name}
+          value={values[name]}
+          onChange={setValue}
+          placeholder={f[name]?.placeholder}
+          options={options || []}
+          required={REQUIRED.includes(name)}
+          error={errors[name]}
+        />
+      ),
+    });
 
   return (
-    <>
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* Section H — Branch Map "Your Exhibition Partner"              */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <Box sx={{ pt: { xs: 8, md: 10 }, mt: 10 }}>
-        <Container maxWidth="xxl">
-          <FadeScroll>
-            <Typography
-              variant="headingLarge"
-              color="primary.main"
-              textAlign="center"
-              display="block"
-              mb={1}
-            >
-              {contact.heading}
-            </Typography>
-          </FadeScroll>
-        </Container>
+    <Box sx={{ position: "relative", bgcolor: "brand.page", color: "common.white", pb: { xs: 8, md: fluid(57, 40) } }}>
+      <HeroBackdrop image={heroImage} photoHeight={{ xs: 560, md: fluid(1270, 700) }} totalHeight={{ xs: 760, md: fluid(1783, 980) }} />
+
+      <Box sx={{ position: "relative" }}>
+        <Box sx={{ ...block(1532), pt: { xs: 14, md: fluid(305, 160) } }}>
+          <PageHeading size={55}>{heading}</PageHeading>
+          <Typography sx={{ mt: { xs: 2.5, md: fluid(26, 16) }, maxWidth: { md: fluid(570, 420) }, fontSize: { xs: 17, md: fluid(24, 16) }, lineHeight: 1.21 }}>
+            {intro}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mt: { xs: 5, md: fluid(32, 24) } }}>
+          {status === "sent" ? (
+            <SuccessPanel title={form.successTitle} body={form.successBody} />
+          ) : (
+            <FormPanel>
+              <Box component="form" noValidate onSubmit={onSubmit}>
+                <Typography component="h2" sx={{ fontSize: { xs: 24, md: fluid(36, 22) }, fontWeight: 600 }}>
+                  {form.sectionTitle}
+                </Typography>
+                <Box sx={{ mt: { xs: 3, md: fluid(44, 24) } }}>
+                  <FieldGrid>
+                    {input("company")}
+                    {input("contactPerson")}
+                    {input("jobTitle")}
+                    {input("email", { input: { type: "email", autoComplete: "email" } })}
+                    {input("phone", { input: { type: "tel", autoComplete: "tel" } })}
+                    {select("service", form.serviceOptions)}
+                    {input("projectName")}
+                    {input("location")}
+                    {input("date")}
+                    {input("scale")}
+                    {input("budget")}
+                    {select("source", form.sourceOptions)}
+                    {input("brief", {
+                      field: { full: true },
+                      render: (
+                        <TextArea
+                          id="f-brief"
+                          name="brief"
+                          value={values.brief}
+                          onChange={setValue}
+                          placeholder={f.brief?.placeholder}
+                          maxLength={BRIEF_MAX}
+                          required
+                          error={errors.brief}
+                        />
+                      ),
+                    })}
+                    <Field id="f-documents" label={f.documents?.label} full>
+                      <FileDropzone
+                        id="f-documents"
+                        files={values.documents}
+                        onChange={(files) => setValue("documents", files)}
+                        multiple
+                        maxFiles={5}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        title={f.documents?.uploadTitle}
+                        hint={f.documents?.uploadHint}
+                        formats={f.documents?.uploadFormats}
+                        error={errors.documents}
+                      />
+                    </Field>
+                  </FieldGrid>
+                </Box>
+
+                <Box sx={{ mt: { xs: 4, md: fluid(44, 28) } }}>
+                  <Consent
+                    id="f-consent"
+                    checked={values.consent}
+                    onChange={(v) => setValue("consent", v)}
+                    text={form.consent}
+                    linkLabel={form.privacyLinkLabel}
+                    error={errors.consent}
+                  />
+                </Box>
+
+                <Honeypot value={values.website} onChange={(v) => setValue("website", v)} />
+
+                {status === "error" && (
+                  <Typography role="alert" sx={{ mt: 3, color: "#FF6B70", fontSize: { xs: 15, md: fluid(18, 14) } }}>
+                    {message || form.errorText}
+                  </Typography>
+                )}
+
+                <Box sx={{ mt: { xs: 4, md: fluid(70, 32) } }}>
+                  <SubmitButton label={form.submitLabel} loading={status === "sending"} />
+                </Box>
+              </Box>
+            </FormPanel>
+          )}
+        </Box>
       </Box>
-      <Container
-        maxWidth={"xxl"}
-        disableGutters
-        sx={{
-          px: 0,
-        }}
-      >
-        {/* Map placeholder with branch markers */}
-        <Box
-          component={"img"}
-          src={contact.mapImage}
-          sx={{
-            width: "100%",
-            objectFit: "cover",
-            mt: 6,
-            flex: 1,
-            pb: { xs: 8, md: 10 },
-          }}
-        />
-      </Container>
-
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* Section A — About US                                         */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <Container maxWidth="xxl" sx={{ py: 8 }}>
-        <Box
-          display={"flex"}
-          flexDirection={{ xs: "column", md: "row" }}
-          gap={6}
-        >
-          <Typography flex={1} display={"block"} variant="headingMedium">
-            {contact.headquarterLabel}
-          </Typography>
-          <Box flex={1} display={"flex"} flexDirection={"column"} gap={2}>
-            <Typography flex={1} display={"block"} variant="headingMedium">
-              {headquarters.city}
-            </Typography>
-            <Typography
-              flex={1}
-              display={"block"}
-              variant="headingSmall"
-              color="primary.main"
-            >
-              {headquarters.company}
-            </Typography>
-            <Typography flex={1} display={"block"} variant="bodyMedium">
-              {filled(headquarters.address).map((line, i) => (
-                <Box key={line + i} component="span" display="block">
-                  {line}
-                </Box>
-              ))}
-            </Typography>
-            <Typography flex={1} display={"block"} variant="bodyMedium">
-              {officeContactLines(headquarters).map((line, i) => (
-                <Box key={line + i} component="span" display="block">
-                  {line}
-                </Box>
-              ))}
-            </Typography>
-          </Box>
-          <Box
-            flex={1}
-            display={"flex"}
-            position={"relative"}
-            overflow={"hidden"}
-          >
-            <Box
-              component={"img"}
-              src={contact.headquarterMapImage}
-              alt="Map Location"
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </Box>
-        </Box>
-      </Container>
-
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* Section B — Branch Office                                         */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <Container maxWidth="xxl" sx={{ pb: 8 }}>
-        <Box
-          display={"flex"}
-          flexDirection={{ xs: "column", md: "row" }}
-          gap={6}
-        >
-          <Typography flex={1} display={"block"} variant="headingMedium">
-            {contact.branchLabel}
-          </Typography>
-          {branchOffices.slice(0, 2).map((office) => (
-            <Box
-              key={office.city}
-              flex={1}
-              display={"flex"}
-              flexDirection={"column"}
-              gap={2}
-            >
-              <Typography flex={1} display={"block"} variant="headingMedium">
-                {office.city}
-              </Typography>
-              <Typography flex={1} display={"block"} variant="bodyMedium">
-                {[...filled(office.address), ...officeContactLines(office)].map((line, i) => (
-                  <Box key={line + i} component="span" display="block">
-                    {line}
-                  </Box>
-                ))}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-        <Box
-          mt={6}
-          display={"flex"}
-          flexDirection={{ xs: "column", md: "row" }}
-          gap={6}
-        >
-          <Box flex={1} />
-          {branchOffices.slice(2).map((office) => (
-            <Box
-              key={office.city}
-              flex={1}
-              display={"flex"}
-              flexDirection={"column"}
-              gap={2}
-            >
-              <Typography flex={1} display={"block"} variant="headingMedium">
-                {office.city}
-              </Typography>
-              <Typography flex={1} display={"block"} variant="bodyMedium">
-                {[...filled(office.address), ...officeContactLines(office)].map((line, i) => (
-                  <Box key={line + i} component="span" display="block">
-                    {line}
-                  </Box>
-                ))}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </Container>
-    </>
+    </Box>
   );
 }
+
+export default Contact;

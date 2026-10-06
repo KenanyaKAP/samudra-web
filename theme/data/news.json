@@ -1,4 +1,8 @@
 {
   "heading": "News & Event",
-  "moreHeading": "More Release"
+  "backgroundImage": "",
+  "buttonLabel": "Read More",
+  "emptyText": "No news yet.",
+  "backLabel": "Back",
+  "nextLabel": "Next"
 }

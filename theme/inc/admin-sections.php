@@ -9,7 +9,8 @@
  *                       like `image`, `logo` or anything ending in `Image`,
  *                       and for every row of an image list such as `logos`
  *  - dropdowns        — `category` lists the live Portfolio Categories,
- *                       `platform` lists the supported social networks
+ *                       `platform` lists the supported social networks,
+ *                       `nameSide` places a director's name left or right
  *  - reorderable rows — ▲/▼ move repeater rows; PHP rebuilds the array in the
  *                       order the fields arrive in the POST body
  *
@@ -78,12 +79,17 @@ function samudra_active_section_key() {
 /** Extra guidance shown under a section's title. */
 function samudra_section_notes() {
     $categories = admin_url('edit-tags.php?taxonomy=portfolio_category&post_type=portfolio');
+    $form_settings = admin_url('admin.php?page=samudra-form-settings');
     return [
-        'global'   => 'The headquarter and branch offices below feed both the footer and the Contact page.',
-        'home'     => 'Each service card links to /services with its <strong>Category</strong> preselected. The News strip shows the latest posts from <strong>News</strong>.',
+        'global'   => 'The offices below are shown in the footer of every page. <strong>Whatsapp</strong>: the floating "Chat with Samudra" button appears on every page once a <strong>Number</strong> is filled in (with country code, e.g. 62812…).',
+        'home'     => 'Each service card links to /services with its <strong>Category</strong> preselected. The News strip shows the latest posts from <strong>News</strong>. In headings a line break is a new line on the site.',
+        'about'    => 'A blank line in a text starts a new paragraph. In headings a line break is a new line on the site.',
+        'people'   => 'Portraits look best at 4:5 (e.g. 800 × 1000 px) on a black background. <strong>Name Side</strong> puts a director\'s name on the left or right of the photo.',
         'services' => 'The <strong>Intro</strong> shows while "All" is selected. The text for each category is that category\'s <strong>Description</strong> under <a href="' . esc_url($categories) . '">Portfolios → Categories</a>. The project cards come from <strong>Portfolios</strong>.',
-        'news'     => 'The articles themselves are managed under <strong>News</strong>.',
-        'career'   => 'Open positions are managed under <strong>Career</strong>.',
+        'news'     => 'The articles themselves are managed under <strong>News</strong>. <strong>Background Image</strong> is the photo behind the News & Event page.',
+        'contact'  => 'Texts of the Request a Proposal form. Submissions are listed under <strong>Proposal Requests</strong>; who gets the e-mail is set in <a href="' . esc_url($form_settings) . '">Form Settings</a>.',
+        'career'   => 'Open positions are managed under <strong>Career</strong> (a position disappears from the site after its closing date). Applications are listed under <strong>Applications</strong>; who gets the e-mail is set in <a href="' . esc_url($form_settings) . '">Form Settings</a>.',
+        'privacyPolicy' => 'Linked from both forms. A blank line starts a new paragraph.',
     ];
 }
 
@@ -161,6 +167,9 @@ function samudra_select_options($key, $ctx = []) {
             'linkedin'  => 'LinkedIn',
         ];
     }
+    if ($key === 'nameSide') {
+        return ['right' => 'Right', 'left' => 'Left'];
+    }
     if ($key === 'category') {
         $opts = ['' => '— none (opens "All") —'];
         foreach ($ctx['categories'] ?? [] as $slug => $name) {
@@ -211,7 +220,7 @@ function samudra_render_repeater_row($name, $item, $schema, $ctx = [], $is_templ
 
     // Row heading: first human-readable field we can find.
     $title = '';
-    foreach (['title', 'name', 'heading', 'label', 'city', 'period', 'platform'] as $tk) {
+    foreach (['name', 'title', 'heading', 'label', 'city', 'period', 'platform'] as $tk) {
         if (isset($item[$tk]) && is_string($item[$tk]) && $item[$tk] !== '') { $title = $item[$tk]; break; }
     }
     if ($title === '') { $title = $is_template ? 'New entry' : 'Entry'; }

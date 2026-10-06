@@ -1,7 +1,51 @@
 {
-  "heading": "YOUR EXHIBITION PARTNER",
-  "mapImage": "/images/home/maps.png",
-  "headquarterLabel": "Headquarter",
-  "headquarterMapImage": "/images/contact/maps.png",
-  "branchLabel": "Branch Offices"
+  "heading": "Request\nA Proposal",
+  "intro": "Tell us about your project. Our team will review your requirements and contact you to discuss the next steps.",
+  "heroImage": "/images/contact/hero.webp",
+  "form": {
+    "sectionTitle": "Project Information",
+    "fields": {
+      "company": { "label": "Company / Organization Name", "placeholder": "e.g. PT ABC Indonesia" },
+      "contactPerson": { "label": "Contact Person", "placeholder": "e.g. John Doe" },
+      "jobTitle": { "label": "Job Title", "placeholder": "e.g. Marketing Manager" },
+      "email": { "label": "Work Email", "placeholder": "e.g. john@company.com" },
+      "phone": { "label": "Phone / WhatsApp Number", "placeholder": "e.g. +62 81234567890" },
+      "service": { "label": "Service Required", "placeholder": "Select a service" },
+      "projectName": { "label": "Event / Project Name", "placeholder": "e.g. Indonesia International Expo 2025" },
+      "location": { "label": "Event / Project Location", "placeholder": "e.g. Jakarta, Indonesia" },
+      "date": { "label": "Event / Project Date", "placeholder": "e.g. 12–15 March 2026, or an estimated month" },
+      "scale": { "label": "Project Scale", "placeholder": "e.g. 50 - 200 sqm" },
+      "budget": { "label": "Estimated Budget", "placeholder": "e.g. IDR 500 million - 1 billion" },
+      "source": { "label": "How did you hear about us?", "placeholder": "Select an option" },
+      "brief": { "label": "Project Brief", "placeholder": "Please describe your objectives, required deliverables, target audience, timeline, and any specific requirements." },
+      "documents": {
+        "label": "Supporting Documents",
+        "uploadTitle": "Click to upload files or drag and drop",
+        "uploadHint": "Upload brief, floor plan, TOR, or reference materials (optional)",
+        "uploadFormats": "PDF, DOC, DOCX, JPG, PNG (Max 10MB each)"
+      }
+    },
+    "serviceOptions": [
+      "Exhibition Construction",
+      "Event Management",
+      "Pavilion",
+      "Conference",
+      "Tent Services",
+      "Interior Design & Build",
+      "Other"
+    ],
+    "sourceOptions": [
+      "Google Search",
+      "Social Media",
+      "Referral",
+      "Previous Project",
+      "Other"
+    ],
+    "consent": "I agree that PT Samudra Dyan Praga may use the information I provide to review my request and contact me about this project. I have read the",
+    "privacyLinkLabel": "Privacy Policy",
+    "submitLabel": "Submit Proposal Request",
+    "successTitle": "Thank you for contacting PT Samudra Dyan Praga",
+    "successBody": "We have received your project request and will be in touch using the contact details you provided.",
+    "errorText": "Your request could not be sent. Please try again in a moment, or email us at info@samudra.co.id."
+  }
 }

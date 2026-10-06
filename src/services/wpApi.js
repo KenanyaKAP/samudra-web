@@ -41,6 +41,7 @@ function parseJsonArray(raw) {
   }
 }
 
+/** "2025-04-13T09:00:00" → "April 13, 2025" */
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
@@ -66,6 +67,26 @@ function embeddedTerm(wpPost, taxonomy) {
   return null;
 }
 
+/**
+ * The neighbours of an item in its list order (newest first): `back` is the
+ * item listed just before it (newer), `next` the one just after it (older).
+ * Either is null at the ends of the list.
+ */
+async function fetchAdjacent(type, dateRaw) {
+  const one = (params) =>
+    api
+      .get(`/${type}`, { params: { per_page: 1, orderby: "date", _fields: "slug,title", ...params } })
+      .then((res) => {
+        const post = res.data[0];
+        return post ? { slug: post.slug, title: htmlToText(post.title?.rendered) } : null;
+      });
+  const [back, next] = await Promise.all([
+    one({ after: dateRaw, order: "asc" }),
+    one({ before: dateRaw, order: "desc" }),
+  ]);
+  return { back, next };
+}
+
 // ════════════════════════════════════════════════════════════════════
 //  PORTFOLIO (Custom Post Type: 'portfolio')
 // ════════════════════════════════════════════════════════════════════
@@ -82,8 +103,11 @@ function mapWPPortfolio(wpPost) {
   return {
     id: wpPost.id,
     slug: wpPost.slug,
+    dateRaw: wpPost.date,
     title: htmlToText(wpPost.title?.rendered),
+    // Card summary; also the detail text when the editor body is empty.
     description: meta.portfolio_description || "",
+    contentHtml: wpPost.content?.rendered || "",
     category: term ? htmlToText(term.name) : "",
     categoryId: term ? term.id : null,
     coverImage: cover || meta.portfolio_hero_image || "",
@@ -134,22 +158,9 @@ export async function fetchPortfolioBySlug(slug) {
   return mapWPPortfolio(res.data[0]);
 }
 
-/**
- * Related projects for the detail page: same category, excluding the
- * current one.
- */
-export async function fetchHighlightedProjects(categoryId, excludeId, limit = 6) {
-  const params = {
-    _embed: true,
-    per_page: limit,
-    exclude: excludeId,
-    orderby: "date",
-    order: "desc",
-  };
-  if (categoryId) params.portfolio_category = categoryId;
-
-  const res = await api.get("/portfolio", { params });
-  return res.data.map(mapWPPortfolio).slice(0, limit);
+/** BACK / NEXT links of a portfolio detail page. */
+export function fetchAdjacentPortfolios(item) {
+  return fetchAdjacent("portfolio", item.dateRaw);
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -158,17 +169,15 @@ export async function fetchHighlightedProjects(categoryId, excludeId, limit = 6)
 
 /** Maps a WordPress post to the frontend EventItem shape. */
 function mapWPEvent(wpPost) {
-  const term = embeddedTerm(wpPost, "category");
   return {
     id: wpPost.id,
     slug: wpPost.slug,
+    dateRaw: wpPost.date,
     title: htmlToText(wpPost.title?.rendered),
     date: formatDate(wpPost.date),
     description: htmlToText(wpPost.excerpt?.rendered),
-    content: htmlToText(wpPost.content?.rendered),
     contentHtml: wpPost.content?.rendered || "",
     coverImage: featuredImage(wpPost),
-    category: term ? htmlToText(term.name) : "",
   };
 }
 
@@ -194,18 +203,9 @@ export async function fetchEventBySlug(slug) {
   return mapWPEvent(res.data[0]);
 }
 
-/** Fetch more/related events, excluding the current one. */
-export async function fetchMoreEvents(excludeId, limit = 3) {
-  const res = await api.get("/posts", {
-    params: {
-      _embed: true,
-      per_page: limit,
-      exclude: excludeId,
-      orderby: "date",
-      order: "desc",
-    },
-  });
-  return res.data.map(mapWPEvent);
+/** BACK / NEXT links of a news detail page. */
+export function fetchAdjacentEvents(item) {
+  return fetchAdjacent("posts", item.dateRaw);
 }
 
 /** Fetch the latest N news/event posts (Home page strip). */
@@ -225,26 +225,111 @@ export async function fetchLatestNews(limit = 6) {
 //  CAREER POSITIONS (Custom Post Type: 'career')
 // ════════════════════════════════════════════════════════════════════
 
+/** Today as "YYYY-MM-DD" in the visitor's time zone. */
+function todayIso() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
 function mapWPCareer(wpPost) {
   const meta = wpPost.meta || {};
+  const closingDate = meta.career_closing_date || "";
   return {
     id: wpPost.id,
     title: htmlToText(wpPost.title?.rendered),
-    type: meta.career_type || "Full Time",
+    image: featuredImage(wpPost),
+    type: meta.career_type || "",
+    level: meta.career_level || "",
     location: meta.career_location || "",
     description: meta.career_description || "",
-    applyUrl: meta.career_apply_url || "",
+    closingDate,
+    // "2026-10-30" → "30 October 2026", as in the design.
+    closingDateLabel: closingDate
+      ? new Date(`${closingDate}T00:00:00`).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : "",
   };
 }
 
-/** Fetch all open career positions. */
+/**
+ * Open positions: published, and either without a closing date or closing
+ * today or later. The application form offers exactly these.
+ */
 export async function fetchCareerPositions() {
   const res = await api.get("/career", {
     params: {
+      _embed: true,
       per_page: 50,
       orderby: "date",
       order: "desc",
     },
   });
-  return res.data.map(mapWPCareer);
+  const today = todayIso();
+  return res.data
+    .map(mapWPCareer)
+    .filter((job) => !job.closingDate || job.closingDate >= today);
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  SEARCH (navbar)
+// ════════════════════════════════════════════════════════════════════
+
+/**
+ * News posts and portfolios matching a query. Permalinks already point at
+ * the React routes (/events/<slug>, /services/<slug>), so only the path is
+ * kept.
+ */
+export async function searchSite(query, { signal } = {}) {
+  const res = await api.get("/search", {
+    params: {
+      search: query,
+      type: "post",
+      subtype: "post,portfolio",
+      per_page: 20,
+    },
+    signal,
+  });
+  return res.data.map((hit) => {
+    let path = "";
+    try {
+      path = new URL(hit.url).pathname;
+    } catch {
+      path = "";
+    }
+    return {
+      id: hit.id,
+      title: htmlToText(hit.title),
+      kind: hit.subtype === "portfolio" ? "project" : "news",
+      path,
+    };
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  FORMS (Request a Proposal, Career Application)
+// ════════════════════════════════════════════════════════════════════
+
+/**
+ * POST a multipart form to /samudra/v1/forms/<kind>. Resolves on success;
+ * rejects with an Error whose `fields` maps field names to the server's
+ * validation messages.
+ */
+export async function submitForm(kind, formData) {
+  try {
+    const res = await axios.post(`${WP_JSON_BASE}/samudra/v1/forms/${kind}`, formData, {
+      timeout: 120000,
+    });
+    return res.data;
+  } catch (err) {
+    const data = err.response?.data;
+    // An empty message means "no usable answer from the server" (network
+    // error, PHP fatal): the form then shows its own generic error text.
+    const error = new Error(data?.message || "");
+    error.fields = data?.data?.fields || {};
+    throw error;
+  }
 }

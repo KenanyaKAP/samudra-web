@@ -1,81 +1,68 @@
 import { Fragment } from "react";
-import { Typography, Link as MuiLink } from "@mui/material";
+import { Box, Typography, Link as MuiLink } from "@mui/material";
 import { filled, telHref } from "../../utils/offices";
+import { fluid } from "../../utils/design";
 
-const linkSx = {
-  color: "text.light",
-};
+const linkSx = { color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } };
 
-/** Comma-separated tel: links, as the footer prints them. */
-function PhoneLinks({ numbers }) {
-  return numbers.map((number, i) => (
-    <Fragment key={number + i}>
-      {i > 0 && ", "}
-      <MuiLink href={telHref(number)} sx={linkSx}>
-        {number}
-      </MuiLink>
-    </Fragment>
-  ));
+/** "Phone : +62 21 …  +62 21 …" with every number a tel: link. */
+function NumberLine({ label, numbers }) {
+  if (!numbers.length) return null;
+  return (
+    <Box component="span" sx={{ display: "block" }}>
+      {label} :{" "}
+      {numbers.map((number, i) => (
+        <Fragment key={number + i}>
+          {i > 0 && " "}
+          <MuiLink href={telHref(number)} sx={linkSx}>
+            {number}
+          </MuiLink>
+        </Fragment>
+      ))}
+    </Box>
+  );
 }
 
 /**
  * One office in the footer: city heading, then company (headquarter only),
- * address lines and linked Phone / Fax / Email lines.
+ * address lines and Phone / HP / Fax / Email.
  *
- * Site Content → Global → Offices. The same data feeds the Contact page.
+ * Site Content → Global → Offices.
  */
 function OfficeBlock({ office = {} }) {
   const address = filled(office.address);
-  const phones = filled(office.phones);
-  const fax = filled(office.fax);
   const lines = office.company ? [office.company, ...address] : address;
 
   return (
-    <>
+    <Box sx={{ color: "common.white" }}>
       <Typography
-        display={"block"}
-        variant="headingSmall"
-        color="text.light"
-        fontWeight={700}
+        component="h3"
+        sx={{ fontSize: fluid(28, 20), fontWeight: 600, textTransform: "uppercase", lineHeight: 1.2 }}
       >
-        {String(office.city || "").toUpperCase()}
+        {office.city}
       </Typography>
       <Typography
-        mt={1}
-        display={"block"}
-        variant="bodyMedium"
-        color="text.light"
+        component="address"
+        sx={{ mt: fluid(14, 8), fontStyle: "normal", fontSize: fluid(17, 14), lineHeight: 1.5 }}
       >
-        {lines.map((line, i) => (
-          <Fragment key={line + i}>
-            {i > 0 && <br />}
+        {lines.map((line) => (
+          <Box component="span" key={line} sx={{ display: "block" }}>
             {line}
-          </Fragment>
+          </Box>
         ))}
-        {phones.length > 0 && (
-          <>
-            <br />
-            Phone: <PhoneLinks numbers={phones} />
-          </>
-        )}
-        {fax.length > 0 && (
-          <>
-            <br />
-            Fax: <PhoneLinks numbers={fax} />
-          </>
-        )}
+        <NumberLine label="Phone" numbers={filled(office.phones)} />
+        <NumberLine label="HP" numbers={filled(office.mobile)} />
+        <NumberLine label="Fax" numbers={filled(office.fax)} />
         {office.email && (
-          <>
-            <br />
-            Email:{" "}
+          <Box component="span" sx={{ display: "block" }}>
+            Email :{" "}
             <MuiLink href={`mailto:${office.email}`} sx={linkSx}>
               {office.email}
             </MuiLink>
-          </>
+          </Box>
         )}
-        <br />
       </Typography>
-    </>
+    </Box>
   );
 }
 

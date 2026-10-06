@@ -9,7 +9,8 @@
  *
  * One field-definition array drives meta registration (REST), the generic
  * meta box and saving. Meta keys are "<cpt>_<field>". Image fields store an
- * attachment URL; gallery fields store a JSON array of URLs.
+ * attachment URL; gallery fields store a JSON array of URLs; date fields store
+ * "YYYY-MM-DD".
  */
 
 if (!defined('ABSPATH')) {
@@ -20,15 +21,16 @@ if (!defined('ABSPATH')) {
 function samudra_cpt_fields() {
     return [
         'portfolio' => [
-            'description'    => ['label' => 'Short Description (shown under the title on the detail page)', 'type' => 'textarea'],
-            'hero_image'     => ['label' => 'Hero Image (large image of the gallery viewer)', 'type' => 'image'],
-            'gallery_images' => ['label' => 'Gallery Images (thumbnails next to the hero image)', 'type' => 'gallery'],
+            'description'    => ['label' => 'Card Summary (2–3 lines on the Services card; also the detail text while the editor above is empty)', 'type' => 'textarea'],
+            'hero_image'     => ['label' => 'Main Image (top of the detail page; the Featured Image is used when empty)', 'type' => 'image'],
+            'gallery_images' => ['label' => 'Gallery (photos under the text on the detail page)', 'type' => 'gallery'],
         ],
         'career' => [
-            'type'        => ['label' => 'Employment Type', 'type' => 'select', 'options' => ['Full Time', 'Part Time', 'Contract', 'Internship']],
-            'location'    => ['label' => 'Location', 'type' => 'text', 'placeholder' => 'e.g. Jakarta'],
-            'description' => ['label' => 'Job Description', 'type' => 'textarea'],
-            'apply_url'   => ['label' => 'Apply Now URL (e.g. Google Form, LinkedIn)', 'type' => 'url', 'placeholder' => 'https://forms.google.com/...'],
+            'location'     => ['label' => 'Location', 'type' => 'text', 'placeholder' => 'e.g. Jakarta, Indonesia'],
+            'type'         => ['label' => 'Employment Type', 'type' => 'select', 'options' => ['Full-time', 'Part-time', 'Contract', 'Internship']],
+            'level'        => ['label' => 'Level', 'type' => 'text', 'placeholder' => 'e.g. Managerial Position'],
+            'description'  => ['label' => 'Short Description (one or two sentences on the card)', 'type' => 'textarea'],
+            'closing_date' => ['label' => 'Application Closes On (the position disappears from the site the day after; leave empty to keep it open)', 'type' => 'date'],
         ],
     ];
 }
@@ -38,7 +40,7 @@ function samudra_default_portfolio_categories() {
     return [
         'Exhibition Construction' => 'Focusing in Exhibition Stand Design and Construction, Exhibition Division\'s services start from design concept through project planning up to implementation. Our Service include Standard Booth R8 & Maxima System, Custom Booth, Organizer Job, Interior Design and Exhibition Facilities.',
         'Interior Design & Build' => 'We provide the best support for Interior Design consultant that deliver creative interior design, ranging from residential, showrooms to office interiors. As experience and professional construction company, we have full-service solutions from design to build with the best quality.',
-        'Special Projects'        => 'Special Projects Division as a Professional Convention and Event’s Management Organizer is a certified Professional Convention Organizer (PCO). The certificate was issued by Jakarta Tourism & Culture Office for companies whose expertise in managing events: seminars, conventions, exhibitions, and other specialty events.',
+        'Special Project'         => 'Special Projects Division as a Professional Convention and Event’s Management Organizer is a certified Professional Convention Organizer (PCO). The certificate was issued by Jakarta Tourism & Culture Office for companies whose expertise in managing events: seminars, conventions, exhibitions, and other specialty events.',
         'Tent Service'            => 'Realizing that the world of tomorrow demands more and more mobility, in 1997 SAMUDRA established a Tent Division to provide services and support for outdoor corporate events, sports events, hospitality and celebratory events, and mobile exhibitions. Today, the foremost outdoor systems provider in Indonesia, Tent Division offers a wide range of tent sizes up to 20,000 square meters.',
     ];
 }
@@ -75,8 +77,8 @@ add_action('init', function () {
         'rewrite'       => ['slug' => 'services'],
         'menu_icon'     => 'dashicons-portfolio',
         'menu_position' => 5,
-        // No 'editor': everything the detail page shows is in the meta box.
-        'supports'      => ['title', 'thumbnail', 'custom-fields'],
+        // Editor = the article on the detail page; Featured Image = card photo.
+        'supports'      => ['title', 'editor', 'thumbnail', 'custom-fields'],
         'show_in_rest'  => true,
         'taxonomies'    => ['portfolio_category'],
     ]);
@@ -117,13 +119,14 @@ add_action('init', function () {
             'menu_name'          => 'Career',
         ],
         // Listed on /career only; positions have no page of their own.
+        // Featured Image = the photo on the card.
         'public'              => false,
         'show_ui'             => true,
         'show_in_menu'        => true,
         'exclude_from_search' => true,
         'menu_icon'           => 'dashicons-businessperson',
         'menu_position'       => 6,
-        'supports'            => ['title', 'custom-fields'],
+        'supports'            => ['title', 'thumbnail', 'custom-fields'],
         'show_in_rest'        => true,
     ]);
 });
@@ -150,6 +153,12 @@ add_action('init', function () {
     $l->name_admin_bar = 'News';
     $type->menu_icon   = 'dashicons-megaphone';
 });
+
+// ─── Titles exactly as typed ────────────────────────────────────────
+// WordPress "texturizes" titles (" - " becomes an en dash, quotes curl), so
+// "Sales - Governments" would read differently on the site than in wp-admin
+// and in the design, and no longer match the Position Applied For options.
+remove_filter('the_title', 'wptexturize');
 
 // ─── Permalinks match the React routes ──────────────────────────────
 // So "View Post", the editor permalink and the REST `link` field all open the
@@ -250,7 +259,9 @@ function samudra_render_cpt_metabox($post, $box) {
             ?>
             <div class="scpt-field">
                 <label for="<?php echo esc_attr($field_id); ?>"><?php echo esc_html($spec['label']); ?></label>
-                <?php if ($spec['type'] === 'text'): ?>
+                <?php if ($spec['type'] === 'date'): ?>
+                    <input type="date" id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($meta_key); ?>" value="<?php echo esc_attr($val); ?>" style="max-width:220px;" />
+                <?php elseif ($spec['type'] === 'text'): ?>
                     <input type="text" id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($meta_key); ?>" value="<?php echo esc_attr($val); ?>" placeholder="<?php echo esc_attr($placeholder); ?>" />
                 <?php elseif ($spec['type'] === 'url'): ?>
                     <input type="url" id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($meta_key); ?>" value="<?php echo esc_attr($val); ?>" placeholder="<?php echo esc_attr($placeholder); ?>" />
@@ -305,6 +316,9 @@ add_action('save_post', function ($post_id) {
             update_post_meta($post_id, $meta_key, sanitize_textarea_field($raw));
         } elseif ($spec['type'] === 'image' || $spec['type'] === 'url') {
             update_post_meta($post_id, $meta_key, esc_url_raw($raw));
+        } elseif ($spec['type'] === 'date') {
+            $date = DateTime::createFromFormat('Y-m-d', $raw);
+            update_post_meta($post_id, $meta_key, $date && $date->format('Y-m-d') === $raw ? $raw : '');
         } elseif ($spec['type'] === 'select') {
             update_post_meta($post_id, $meta_key, in_array($raw, $spec['options'], true) ? $raw : $spec['options'][0]);
         } elseif ($spec['type'] === 'gallery') {
@@ -323,6 +337,35 @@ add_action('save_post', function ($post_id) {
         }
     }
 });
+
+// ─── Career list: show the closing date and whether it is still open ──
+add_filter('manage_career_posts_columns', function ($columns) {
+    $date = $columns['date'] ?? null;
+    unset($columns['date']);
+    $columns['samudra_closes'] = 'Closes';
+    if ($date) {
+        $columns['date'] = $date;
+    }
+    return $columns;
+});
+
+add_action('manage_career_posts_custom_column', function ($column, $post_id) {
+    if ($column !== 'samudra_closes') {
+        return;
+    }
+    $closes = get_post_meta($post_id, 'career_closing_date', true);
+    if (!$closes) {
+        echo '<span style="color:#008a20;">Open (no closing date)</span>';
+        return;
+    }
+    $open = $closes >= wp_date('Y-m-d');
+    printf(
+        '%s<br><span style="color:%s;">%s</span>',
+        esc_html(wp_date('j F Y', strtotime($closes))),
+        $open ? '#008a20' : '#d63638',
+        $open ? 'Open' : 'Closed — hidden on the site'
+    );
+}, 10, 2);
 
 // ─── Media picker JS for the meta boxes ─────────────────────────────
 add_action('admin_enqueue_scripts', function () {

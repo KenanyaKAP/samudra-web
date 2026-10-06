@@ -4,8 +4,9 @@ import { fail, root, runPhpInWordpress } from "./lib/wp-php.js";
 
 /**
  * Fill the running WordPress with demo content: the portfolio categories,
- * 12 portfolios, 9 news posts and 3 career positions (OLD's mock data).
- * Images are imported into the Media Library from theme/dist/images.
+ * the 9 news posts, 4 open positions and the Indonesia Pavilion project of
+ * New Design.pdf, plus OLD's 12 mock portfolios. Images are imported into
+ * the Media Library from theme/dist/images.
  *
  *   npm run wp:seed-demo              create / update the demo content
  *   npm run wp:seed-demo -- --clean   delete everything it created

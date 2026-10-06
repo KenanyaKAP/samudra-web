@@ -137,18 +137,41 @@ function samudra_spa_routes() {
     return [
         '/',
         '/about',
-        '/about/history',
-        '/about/company',
-        '/about/vision',
-        '/about/values',
-        '/about/management',
-        '/about/awards',
+        '/people',
         '/services',
         '/events',
         '/contact',
         '/career',
+        '/privacy-policy',
     ];
 }
+
+/**
+ * Pages of the old site that the redesign merged into others. Answered with
+ * a permanent redirect so old links and search results keep working.
+ */
+function samudra_legacy_redirects() {
+    return [
+        '/about/history'    => '/about',
+        '/about/company'    => '/about',
+        '/about/vision'     => '/about',
+        '/about/values'     => '/about',
+        '/about/awards'     => '/about',
+        '/about/management' => '/people',
+    ];
+}
+
+add_action('template_redirect', function () {
+    if (is_admin()) {
+        return;
+    }
+    $path = rtrim((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
+    $map = samudra_legacy_redirects();
+    if (isset($map[$path])) {
+        wp_safe_redirect(home_url($map[$path]), 301);
+        exit;
+    }
+}, 1);
 
 /** True when a published post of $type has this slug. */
 function samudra_published_slug_exists($slug, $type) {
@@ -289,36 +312,28 @@ function samudra_get_seed_keys() {
         'global',
         'home',
         'about',
-        'aboutHistory',
-        'aboutCompany',
-        'aboutVision',
-        'aboutValues',
-        'aboutManagement',
-        'aboutAwards',
+        'people',
         'services',
         'news',
         'contact',
         'career',
+        'privacyPolicy',
         'notFound',
     ];
 }
 
 function samudra_section_labels() {
     return [
-        'global'          => 'Global (Header & Footer)',
-        'home'            => 'Home Page',
-        'about'           => 'About Page',
-        'aboutHistory'    => 'About › History',
-        'aboutCompany'    => 'About › About Samudra',
-        'aboutVision'     => 'About › Vision & Mission',
-        'aboutValues'     => 'About › Core Values',
-        'aboutManagement' => 'About › Board of Management',
-        'aboutAwards'     => 'About › Awards',
-        'services'        => 'Services Page',
-        'news'            => 'News Page',
-        'contact'         => 'Contact Page',
-        'career'          => 'Career Page',
-        'notFound'        => '404 Page',
+        'global'        => 'Global (Header & Footer)',
+        'home'          => 'Home Page',
+        'about'         => 'About Page',
+        'people'        => 'People Page',
+        'services'      => 'Services Page',
+        'news'          => 'News Page',
+        'contact'       => 'Contact (Request a Proposal)',
+        'career'        => 'Career Page',
+        'privacyPolicy' => 'Privacy Policy',
+        'notFound'      => '404 Page',
     ];
 }
 
@@ -527,8 +542,34 @@ add_action('rest_api_init', function () {
     ]);
 });
 
+// ─── One-off upgrades of stored data ────────────────────────────────
+//
+// Runs once per version bump, on the first request after a deploy.
+// v2 (redesign, Oct 2026): the six About sub-pages became one About page and
+// /people, and "Special Projects" became "Special Project".
+function samudra_maybe_upgrade() {
+    $version = (int) get_option('samudra_schema_version', 1);
+    if ($version >= 2) {
+        return;
+    }
+    foreach (['aboutHistory', 'aboutCompany', 'aboutVision', 'aboutValues', 'aboutManagement', 'aboutAwards'] as $key) {
+        delete_option('samudra_data_' . $key);
+    }
+    $old = get_term_by('slug', 'special-projects', 'portfolio_category');
+    if ($old && !term_exists('special-project', 'portfolio_category')) {
+        wp_update_term($old->term_id, 'portfolio_category', ['name' => 'Special Project', 'slug' => 'special-project']);
+    }
+    samudra_rewrite_rules();
+    flush_rewrite_rules();
+    update_option('samudra_schema_version', 2);
+}
+add_action('init', 'samudra_maybe_upgrade', 20);
+
 // ─── Custom Post Types (Portfolio / Career) + News relabel ──────────
 require_once get_template_directory() . '/inc/post-types.php';
+
+// ─── Request a Proposal + Career Application forms ──────────────────
+require_once get_template_directory() . '/inc/forms.php';
 
 // ─── Admin: "Site Content" pages ────────────────────────────────────
 require_once get_template_directory() . '/inc/admin-sections.php';

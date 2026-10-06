@@ -6,32 +6,24 @@ import { WP_JSON_BASE } from "../services/wpApi";
 import seedGlobal from "../data/global.json";
 import seedHome from "../data/home.json";
 import seedAbout from "../data/about.json";
-import seedAboutHistory from "../data/aboutHistory.json";
-import seedAboutCompany from "../data/aboutCompany.json";
-import seedAboutVision from "../data/aboutVision.json";
-import seedAboutValues from "../data/aboutValues.json";
-import seedAboutManagement from "../data/aboutManagement.json";
-import seedAboutAwards from "../data/aboutAwards.json";
+import seedPeople from "../data/people.json";
 import seedServices from "../data/services.json";
 import seedNews from "../data/news.json";
 import seedContact from "../data/contact.json";
 import seedCareer from "../data/career.json";
+import seedPrivacyPolicy from "../data/privacyPolicy.json";
 import seedNotFound from "../data/notFound.json";
 
 const defaultData = {
   global: seedGlobal,
   home: seedHome,
   about: seedAbout,
-  aboutHistory: seedAboutHistory,
-  aboutCompany: seedAboutCompany,
-  aboutVision: seedAboutVision,
-  aboutValues: seedAboutValues,
-  aboutManagement: seedAboutManagement,
-  aboutAwards: seedAboutAwards,
+  people: seedPeople,
   services: seedServices,
   news: seedNews,
   contact: seedContact,
   career: seedCareer,
+  privacyPolicy: seedPrivacyPolicy,
   notFound: seedNotFound,
 };
 

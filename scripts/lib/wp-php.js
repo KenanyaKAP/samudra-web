@@ -25,6 +25,10 @@ export function syncSeeds() {
  * Pipe a PHP file into the WordPress container's php over stdin. Nothing is
  * written into theme/, so these scripts can never ship to production or be
  * reached over HTTP.
+ *
+ * Runs as www-data, the web server's user: as root, the first media import
+ * would create wp-content/uploads owned by root, and every later upload from
+ * wp-admin or the site's forms would fail.
  */
 export function runPhpInWordpress(phpFile, env = {}) {
   // `exec` against a stopped service gives a much less obvious error.
@@ -45,7 +49,7 @@ export function runPhpInWordpress(phpFile, env = {}) {
   const envArgs = Object.entries(env).flatMap(([k, v]) => ["-e", `${k}=${v}`]);
   const run = spawnSync(
     "docker",
-    ["compose", "exec", "-T", ...envArgs, SERVICE, "php"],
+    ["compose", "exec", "-T", "-u", "www-data", ...envArgs, SERVICE, "php"],
     {
       cwd: root,
       input: fs.readFileSync(path.join(root, "scripts", phpFile)),

@@ -1,9 +1,8 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-// Montserrat is self-hosted (src/fonts.css). OLD listed "Metropolis" first in
-// the heading stacks, but its font files never shipped, so every heading has
-// always rendered in Montserrat — dropping it changes nothing on screen.
+// Fonts are self-hosted (src/fonts.css).
 const FONT_FAMILY = "'Montserrat Variable', 'Montserrat', sans-serif";
+export const ROBOTO = "'Roboto', 'Helvetica Neue', Arial, sans-serif";
 
 // Create a custom theme for Samudra
 let theme = createTheme({
@@ -20,7 +19,7 @@ let theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#EA1F25",
+      main: "#EA1F26",
       light: "#FF5252",
       dark: "#B71C1C",
     },
@@ -35,6 +34,18 @@ let theme = createTheme({
       primary: "#1A1A1A",
       secondary: "#555555",
       light: "#ffffff",
+    },
+    // Sampled from New Design.pdf.
+    brand: {
+      ink: "#313131", // dark text on white pages
+      charcoal: "#323131", // footer, filter chips, "About Samudra"
+      card: "#515153", // portfolio card body
+      page: "#110F0D", // dark page background
+      panel: "#282525", // form panel
+      input: "#211D1E", // form fields
+      placeholder: "#4F4B4C",
+      nav: "rgba(33, 31, 31, 0.5)", // floating navbar over anything
+      success: "#3AB54A",
     },
   },
   typography: {

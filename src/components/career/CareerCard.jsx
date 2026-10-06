@@ -1,177 +1,138 @@
-import { Box, Typography, Grid } from "@mui/material";
-import PlaceIcon from "@mui/icons-material/Place";
+import { Box, ButtonBase, Typography } from "@mui/material";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { block, fluid } from "../../utils/design";
 
-/**
- * "Join Our Team" intro card — always the first card. Content comes from
- * Site Content → Career Page → Join Card.
- */
-function JoinTeamCard({ card = {} }) {
-  const paragraphs = card.paragraphs || [];
+function Meta({ icon, children, first }) {
+  const Icon = icon;
   return (
     <Box
       sx={{
-        bgcolor: "primary.main",
-        p: 3,
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
+        gap: fluid(10, 6),
+        pl: first ? 0 : { xs: 0, md: fluid(22, 12) },
+        pr: { xs: 0, md: fluid(22, 12) },
+        borderLeft: { md: first ? "none" : "1px solid rgba(255,255,255,0.75)" },
       }}
     >
-      <Box
-        component="img"
-        src={card.image}
-        alt="Join our team"
-        sx={{
-          width: "100%",
-          aspectRatio: "2/1",
-          objectFit: "cover",
-          display: "block",
-          // border bottom left only
-          borderBottomLeftRadius: 24,
-        }}
-      />
-      <Box mt={2}>
-        <Typography
-          variant="bodyLarge"
-          display="block"
-          fontWeight={700}
-          color="text.light"
-        >
-          {card.title}
-        </Typography>
-        {paragraphs.map((paragraph, i) => (
-          <Typography
-            key={i}
-            variant="bodySmall"
-            display="block"
-            color="text.light"
-            sx={{ mt: 1, opacity: 0.9 }}
-          >
-            {paragraph}
-          </Typography>
-        ))}
-      </Box>
+      <Icon sx={{ fontSize: { xs: 22, md: fluid(34, 22) } }} />
+      <Typography component="span" sx={{ fontSize: { xs: 16, md: fluid(21, 15) }, fontWeight: 600 }}>
+        {children}
+      </Typography>
     </Box>
   );
 }
 
 /**
- * A single career position card — always shown in expanded (open) state.
+ * Open position (New Design.pdf, Career): photo, title, location | type |
+ * level, short description, closing date and an APPLY button that jumps to
+ * the application form with this position selected.
  */
-function CareerCardItem({ position }) {
+function CareerCard({ job, applyLabel, closesLabel, onApply }) {
   return (
     <Box
+      component="article"
       sx={{
-        bgcolor: "primary.main",
-        p: 3,
-        height: "100%",
+        ...block(1532),
         display: "flex",
-        flexDirection: "column",
+        flexDirection: { xs: "column", md: "row" },
+        gap: { xs: 3, md: fluid(60, 28) },
+        p: { xs: 2.5, md: `${fluid(29, 20)} ${fluid(60, 28)}` },
+        border: "1px solid rgba(255,255,255,0.55)",
+        borderRadius: { xs: "18px", md: fluid(30, 18) },
+        bgcolor: "rgba(12, 10, 9, 0.62)",
+        color: "common.white",
       }}
     >
-      {/* Title + type */}
-      <Box>
-        <Typography
-          variant="headingMedium"
-          display="block"
-          fontWeight={700}
-          color="text.light"
-          sx={{ textTransform: "uppercase" }}
-        >
-          {position.title}
-        </Typography>
-        <Typography
-          variant="headingSmall"
-          display="block"
-          fontWeight={500}
-          color="text.light"
-          sx={{ opacity: 0.9 }}
-        >
-          {position.type}
-        </Typography>
-      </Box>
-
-      {/* Divider */}
       <Box
         sx={{
-          borderBottom: "2px solid rgba(255,255,255,0.3)",
-          my: 2,
-        }}
-      />
-
-      {/* Location */}
-      <Box display="flex" alignItems="center" gap={0.5}>
-        <PlaceIcon sx={{ fontSize: "1rem", color: "text.light" }} />
-        <Typography variant="bodyMedium" display="block" color="text.light">
-          {position.location}
-        </Typography>
-      </Box>
-
-      {/* Description */}
-      <Box mt={3} flex={1}>
-        <Typography
-          variant="bodyMedium"
-          display="block"
-          color="text.light"
-          sx={{ opacity: 0.9, whiteSpace: "pre-line", wordBreak: "break-word" }}
-        >
-          {position.description ||
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat."}
-        </Typography>
-      </Box>
-
-      {/* Apply Now */}
-      <Box
-        component={position.applyUrl ? "a" : "div"}
-        href={position.applyUrl || undefined}
-        target={position.applyUrl ? "_blank" : undefined}
-        rel={position.applyUrl ? "noopener noreferrer" : undefined}
-        sx={{
-          mt: 3,
-          display: "flex",
-          // alignItems: "center",
-          alignSelf: "end",
-          gap: 1,
-          textDecoration: "none",
-          cursor: "pointer",
-          width: "fit-content",
-          "&:hover": { opacity: 0.8 },
+          flexShrink: 0,
+          width: { xs: "100%", md: fluid(331, 220) },
+          aspectRatio: "1",
+          borderRadius: { xs: "14px", md: fluid(22, 14) },
+          overflow: "hidden",
+          bgcolor: "#2b2b2b",
         }}
       >
-        <Typography
-          variant="bodyMedium"
-          color="text.light"
-          sx={{ fontWeight: 700 }}
-        >
-          APPLY NOW →
+        {job.image && <Box component="img" src={job.image} alt="" loading="lazy" sx={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
+      </Box>
+
+      <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+        <Typography component="h3" sx={{ fontSize: { xs: 24, md: fluid(35, 22) }, fontWeight: 600, mt: { md: fluid(12, 4) } }}>
+          {job.title}
         </Typography>
+
+        <Box sx={{ mt: { xs: 2, md: fluid(38, 16) }, display: "flex", flexWrap: "wrap", rowGap: 1, columnGap: { xs: 2.5, md: 0 } }}>
+          {[
+            [LocationOnOutlinedIcon, job.location],
+            [WorkOutlineIcon, job.type],
+            [GroupsOutlinedIcon, job.level],
+          ]
+            .filter(([, text]) => text)
+            .map(([icon, text], i) => (
+              <Meta key={text} icon={icon} first={i === 0}>
+                {text}
+              </Meta>
+            ))}
+        </Box>
+
+        {job.description && (
+          <Typography sx={{ mt: { xs: 1.5, md: fluid(12, 8) }, fontSize: { xs: 15, md: fluid(17, 14) }, lineHeight: 1.25, whiteSpace: "pre-line" }}>
+            {job.description}
+          </Typography>
+        )}
+
+        <Box sx={{ mt: "auto", pt: { xs: 3, md: fluid(40, 20) } }}>
+          <Box
+            sx={{
+              borderTop: "1px solid rgba(255,255,255,0.75)",
+              pt: { xs: 2, md: fluid(28, 16) },
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: fluid(14, 8) }}>
+              {job.closingDateLabel && (
+                <>
+                  <EventOutlinedIcon sx={{ fontSize: { xs: 24, md: fluid(36, 24) } }} />
+                  <Typography sx={{ fontSize: { xs: 15, md: fluid(20, 14) } }}>
+                    {closesLabel}{" "}
+                    <Box component="strong" sx={{ fontWeight: 700 }}>
+                      {job.closingDateLabel}
+                    </Box>
+                  </Typography>
+                </>
+              )}
+            </Box>
+            <ButtonBase
+              onClick={() => onApply(job)}
+              sx={{
+                width: { xs: "100%", sm: fluid(230, 180) },
+                height: { xs: 50, md: fluid(59, 46) },
+                gap: fluid(26, 14),
+                bgcolor: "#ED1C24",
+                color: "common.white",
+                borderRadius: fluid(10, 8),
+                fontSize: { xs: 20, md: fluid(26, 18) },
+                fontWeight: 600,
+                textTransform: "uppercase",
+                "&:hover": { filter: "brightness(1.08)" },
+              }}
+            >
+              {applyLabel}
+              <ArrowForwardIcon sx={{ fontSize: { xs: 26, md: fluid(38, 24) } }} />
+            </ButtonBase>
+          </Box>
+        </Box>
       </Box>
     </Box>
-  );
-}
-
-/**
- * Grid of career position cards — all always open.
- * First item is always the "Join Our Team" card.
- *
- * @example
- * <CareerCard openPositions={openPositions} joinCard={career.joinCard} />
- */
-function CareerCard({ openPositions, joinCard }) {
-  return (
-    <Grid container spacing={4}>
-      {/* Intro card */}
-      <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-        <JoinTeamCard card={joinCard} />
-      </Grid>
-
-      {/* Dynamic position cards */}
-      {openPositions.map((position, index) => (
-        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-          <CareerCardItem position={position} />
-        </Grid>
-      ))}
-    </Grid>
   );
 }
 
