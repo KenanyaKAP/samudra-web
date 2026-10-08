@@ -25,12 +25,12 @@
     "graphicAlt": "Redefining Experiences",
     "buttonLabel": "Read More",
     "buttonLink": "/about",
-    "backgroundImage": "/images/home/about-bg.webp"
+    "backgroundImage": "/images/home/about-bg-v2.webp"
   },
   "services": {
     "heading": "Service",
-    "headingColor": "dark",
-    "backgroundImage": "/images/home/service-tiles.webp",
+    "headingColor": "light",
+    "backgroundImage": "/images/home/service-bg-v2.webp",
     "buttonLabel": "More",
     "items": [
       {

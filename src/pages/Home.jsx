@@ -24,7 +24,13 @@ const coverSx = (image) => ({
 });
 
 function Home() {
-  const { hero = {}, about = {}, services = {}, news = {}, map = {} } = useSection("home");
+  const {
+    hero = {},
+    about = {},
+    services = {},
+    news = {},
+    map = {},
+  } = useSection("home");
   const [latestNews, setLatestNews] = useState([]);
   const aboutRef = useRef(null);
   const mapRef = useRef(null);
@@ -45,7 +51,10 @@ function Home() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <HeroCarousel slides={hero.slides || []} onScrollDown={() => scrollTo(aboutRef)} />
+      <HeroCarousel
+        slides={hero.slides || []}
+        onScrollDown={() => scrollTo(aboutRef)}
+      />
 
       {/* ── About: "Redefining Experiences" ──────────────────────── */}
       <Box
@@ -58,7 +67,14 @@ function Home() {
           minHeight: { xs: 560, md: 600 },
         }}
       >
-        <Box sx={{ ...block(WIDE), height: "100%", position: "relative", pt: { xs: 12, md: fluid(178, 96) } }}>
+        <Box
+          sx={{
+            ...block(WIDE),
+            height: "100%",
+            position: "relative",
+            pt: { xs: 12, md: fluid(178, 96) },
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -76,7 +92,12 @@ function Home() {
                 component="img"
                 src={about.graphicImage}
                 alt={about.graphicAlt || ""}
-                sx={{ width: { xs: "88%", md: fluid(717, 380) }, height: "auto", mt: { md: fluid(14, 6) }, mr: { md: fluid(42, 10) } }}
+                sx={{
+                  width: { xs: "88%", md: fluid(717, 380) },
+                  height: "auto",
+                  mt: { md: fluid(14, 6) },
+                  mr: { md: fluid(42, 10) },
+                }}
               />
             )}
           </Box>
@@ -103,19 +124,55 @@ function Home() {
       {/* ── Service ──────────────────────────────────────────────── */}
       <Box
         component="section"
-        sx={{ ...coverSx(services.backgroundImage), height: SECTION_HEIGHT, minHeight: { md: 600 } }}
+        sx={{
+          ...coverSx(services.backgroundImage),
+          position: "relative",
+          height: SECTION_HEIGHT,
+          minHeight: { md: 600 },
+        }}
       >
-        <Box sx={{ ...block(WIDE), pt: { xs: 10, md: fluid(148, 80) }, pb: { xs: 10, md: 0 } }}>
+        {/* About and Service continue one background picture; this red rule
+            marks where one section ends. */}
+        <Box
+          aria-hidden="true"
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: fluid(2, 1),
+            bgcolor: "primary.main",
+          }}
+        />
+        <Box
+          sx={{
+            ...block(WIDE),
+            pt: { xs: 10, md: fluid(148, 80) },
+            pb: { xs: 10, md: 0 },
+          }}
+        >
           {/* Site Content → Home → Services → Heading Color: "dark" on a
               light background image, "light" on a dark one. */}
-          <PageHeading component="h2" size={49} color={services.headingColor === "light" ? "common.white" : "text.primary"}>
+          <PageHeading
+            component="h2"
+            size={49}
+            color={
+              services.headingColor === "light"
+                ? "common.white"
+                : "text.primary"
+            }
+          >
             {services.heading}
           </PageHeading>
           <Box
             sx={{
               mt: { xs: 5, md: fluid(112, 48) },
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(4, 1fr)",
+              },
               gap: { xs: 3, md: fluid(32, 18) },
             }}
           >
@@ -123,7 +180,11 @@ function Home() {
               <ServiceCard
                 key={item.title + i}
                 variant="onRed"
-                to={item.category ? `/services?category=${encodeURIComponent(item.category)}` : "/services"}
+                to={
+                  item.category
+                    ? `/services?category=${encodeURIComponent(item.category)}`
+                    : "/services"
+                }
                 image={item.image}
                 title={item.title}
                 description={item.description}
@@ -171,7 +232,11 @@ function Home() {
       </Box>
 
       {/* ── Map of the offices ───────────────────────────────────── */}
-      <Box component="section" ref={mapRef} sx={{ bgcolor: "#000", lineHeight: 0 }}>
+      <Box
+        component="section"
+        ref={mapRef}
+        sx={{ bgcolor: "#000", lineHeight: 0 }}
+      >
         {map.mapImage && (
           <Box
             component="img"

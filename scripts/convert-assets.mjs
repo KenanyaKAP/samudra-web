@@ -65,16 +65,27 @@ const TEAM = {
 const JOBS = [
   // ── Home ──────────────────────────────────────────────────────────
   { src: "HOME/Asset 13@600x-8.png", out: "home/hero-osaka.webp", width: 2560 },
-  { src: "HOME/Asset 14@600x-8.png", out: "home/about-bg.webp", width: 2560, ...TEXTURE },
-  { src: "HOME/Asset 12@600x-8.png", out: "home/redefining-experiences.webp", width: 1440, ...GRAPHIC },
-  // Only a 1200 × 720 preview (with a faint pngtree watermark) for now:
-  // point src at the licensed full-size file once it is downloaded.
+  // About and Service share one background image in the PDF, so the two
+  // sections join without a seam. Both are cut from that image (extracted
+  // with `pdftohtml -xml -zoom 1`) at their artboards, directly above each
+  // other. Asset 22 is the same picture as the Service part, but Asset 14
+  // sits ~412 pt below the About artboard (it repeats the top of Asset 22),
+  // and the two exports do not meet without a visible line.
   {
-    src: "HOME/pngtree-colorful-gradient-abstract-background-wallpaper-sqare-colors-photo-picture-image_11040505.jpg",
-    out: "home/service-tiles.webp",
+    src: "HOME/About+Service background (from New Design.pdf).png",
+    out: "home/about-bg-v2.webp",
     width: 2560,
+    crop: { left: 1225, top: 236, width: 2661, height: 1497 },
     ...TEXTURE,
   },
+  {
+    src: "HOME/About+Service background (from New Design.pdf).png",
+    out: "home/service-bg-v2.webp",
+    width: 2560,
+    crop: { left: 1225, top: 1733, width: 2661, height: 1497 },
+    ...TEXTURE,
+  },
+  { src: "HOME/Asset 12@600x-8.png", out: "home/redefining-experiences.webp", width: 1440, ...GRAPHIC },
   { src: "HOME/Asset 16@600x-8.png", out: "home/news-bg.webp", width: 2560, ...TEXTURE },
   { src: "HOME/map copy2.png", out: "home/map.webp", width: 2560, ...TEXTURE },
 
