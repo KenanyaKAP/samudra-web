@@ -9,8 +9,9 @@
  *
  * One field-definition array drives meta registration (REST), the generic
  * meta box and saving. Meta keys are "<cpt>_<field>". Image fields store an
- * attachment URL; gallery fields store a JSON array of URLs; date fields store
- * "YYYY-MM-DD".
+ * attachment URL (root-relative, "/wp-content/uploads/…", when picked from
+ * the Media Library); gallery fields store a JSON array of URLs; date fields
+ * store "YYYY-MM-DD".
  */
 
 if (!defined('ABSPATH')) {
@@ -383,6 +384,14 @@ function samudra_cpt_media_js() {
     (function ($) {
         function preview(target) { return $('#' + target).closest('.scpt-field').find('.scpt-img-preview'); }
 
+        // Images of this site are stored as "/wp-content/uploads/…", without
+        // the host they were picked on, so they keep working when the site is
+        // opened through another address or moved to another domain.
+        function sitePath(url) {
+            var u = new URL(url, location.href);
+            return u.host === location.host ? u.pathname + u.search : url;
+        }
+
         // ── Single image ────────────────────────────────────────────
         $(document).on('click', '.scpt-img-pick', function (e) {
             e.preventDefault();
@@ -390,7 +399,7 @@ function samudra_cpt_media_js() {
             var frame = wp.media({ title: 'Select Image', multiple: false, library: { type: 'image' } });
             frame.on('select', function () {
                 var att = frame.state().get('selection').first().toJSON();
-                $('#' + target).val(att.url);
+                $('#' + target).val(sitePath(att.url));
                 preview(target).empty().append($('<img alt="">').attr('src', att.url));
             });
             frame.open();
@@ -439,7 +448,7 @@ function samudra_cpt_media_js() {
             var target = $(this).data('target');
             var frame = wp.media({ title: 'Select Images', multiple: 'add', library: { type: 'image' } });
             frame.on('select', function () {
-                var urls = frame.state().get('selection').map(function (a) { return a.toJSON().url; });
+                var urls = frame.state().get('selection').map(function (a) { return sitePath(a.toJSON().url); });
                 var merged = read(target).concat(urls).filter(function (v, i, a) { return a.indexOf(v) === i; });
                 write(target, merged);
             });

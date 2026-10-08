@@ -65,6 +65,10 @@ if (getenv('SAMUDRA_DEMO_CLEAN') === '1') {
 /**
  * Import theme/dist/<path> into the Media Library once and return its URL.
  * Repeated paths reuse the same attachment.
+ *
+ * The URL is root-relative ("/wp-content/uploads/…"): the CLI has no request
+ * host, so an absolute one would be http://localhost:4600/… and break for
+ * anyone opening the site through another address.
  */
 function samudra_demo_media($rel) {
     static $cache = [];
@@ -79,7 +83,7 @@ function samudra_demo_media($rel) {
         'meta_value'  => $rel,
     ]);
     if ($existing) {
-        return $cache[$rel] = ['id' => $existing[0], 'url' => wp_get_attachment_url($existing[0])];
+        return $cache[$rel] = ['id' => $existing[0], 'url' => wp_make_link_relative(wp_get_attachment_url($existing[0]))];
     }
 
     $src = get_template_directory() . '/dist/' . ltrim($rel, '/');
@@ -103,7 +107,7 @@ function samudra_demo_media($rel) {
     update_post_meta($id, SAMUDRA_DEMO_META, '1');
     update_post_meta($id, '_samudra_demo_src', $rel);
 
-    return $cache[$rel] = ['id' => $id, 'url' => wp_get_attachment_url($id)];
+    return $cache[$rel] = ['id' => $id, 'url' => wp_make_link_relative(wp_get_attachment_url($id))];
 }
 
 /** Create or update a post by slug; returns its id. */

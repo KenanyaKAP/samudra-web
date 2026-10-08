@@ -514,6 +514,13 @@ function samudra_admin_section_page() {
             });
 
             // ── Media Library picker ────────────────────────────────
+            // Stored as "/wp-content/uploads/…", without the host it was
+            // picked on, like the seeded "/images/…" paths: it keeps working
+            // through another address or after a move to another domain.
+            function sitePath(url) {
+                var u = new URL(url, location.href);
+                return u.host === location.host ? u.pathname + u.search : url;
+            }
             function preview(input) {
                 var field = input.parentNode;
                 return field ? field.querySelector('.sam-img-preview') : null;
@@ -527,7 +534,7 @@ function samudra_admin_section_page() {
                     var frame = wp.media({ title: 'Select Image', multiple: false, library: { type: 'image' } });
                     frame.on('select', function () {
                         var att = frame.state().get('selection').first().toJSON();
-                        input.value = att.url;
+                        input.value = sitePath(att.url);
                         var p = preview(input);
                         if (p) {
                             p.innerHTML = '';
