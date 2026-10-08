@@ -174,9 +174,10 @@ export default function Services() {
               // The Embla loop needs enough slides to fill wide screens, so
               // the logo list is shown twice.
               images={[...(brands.logos || []), ...(brands.logos || [])]}
-              height={fluid(72, 52)}
+              height={fluid(92, 60)}
+              balance
               speed={1.2}
-              spacing={fluid(64, 32)}
+              spacing={fluid(80, 36)}
               draggable={false}
             />
           </Box>

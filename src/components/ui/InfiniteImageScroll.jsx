@@ -1,7 +1,16 @@
 import { Box } from "@mui/material";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+/**
+ * Share of the row height a logo of aspect ratio `ratio` (width / height)
+ * gets with `balance`: up to 1.2 : 1 the full height, wider logos less, so a
+ * long word mark does not dwarf a round emblem next to it.
+ */
+function balancedHeight(ratio) {
+  return ratio <= 1.2 ? 1 : Math.sqrt(1.2 / ratio);
+}
 
 function InfiniteImageScroll({
   images,
@@ -10,7 +19,10 @@ function InfiniteImageScroll({
   direction = "ltr", // "ltr" or "rtl"
   spacing = "0em",
   draggable = true,
+  balance = false,
 }) {
+  // Aspect ratio of each image once it has loaded (only used with balance).
+  const [ratios, setRatios] = useState({});
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -78,13 +90,23 @@ function InfiniteImageScroll({
               flex: "0 0 auto",
               minWidth: 0,
               mx: 1,
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <img
               src={imgSrc}
               alt={`Image ${index + 1}`}
+              onLoad={
+                balance
+                  ? (e) => {
+                      const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+                      if (w && h) setRatios((r) => ({ ...r, [index]: w / h }));
+                    }
+                  : undefined
+              }
               style={{
-                height: "100%",
+                height: balance && ratios[index] ? `${balancedHeight(ratios[index]) * 100}%` : "100%",
                 width: "auto",
                 display: "block",
                 userSelect: "none",

@@ -67,7 +67,14 @@ const JOBS = [
   { src: "HOME/Asset 13@600x-8.png", out: "home/hero-osaka.webp", width: 2560 },
   { src: "HOME/Asset 14@600x-8.png", out: "home/about-bg.webp", width: 2560, ...TEXTURE },
   { src: "HOME/Asset 12@600x-8.png", out: "home/redefining-experiences.webp", width: 1440, ...GRAPHIC },
-  { src: "HOME/Asset 22@600x-8.png", out: "home/service-bg.webp", width: 2560, ...TEXTURE },
+  // Only a 1200 × 720 preview (with a faint pngtree watermark) for now:
+  // point src at the licensed full-size file once it is downloaded.
+  {
+    src: "HOME/pngtree-colorful-gradient-abstract-background-wallpaper-sqare-colors-photo-picture-image_11040505.jpg",
+    out: "home/service-tiles.webp",
+    width: 2560,
+    ...TEXTURE,
+  },
   { src: "HOME/Asset 16@600x-8.png", out: "home/news-bg.webp", width: 2560, ...TEXTURE },
   { src: "HOME/map copy2.png", out: "home/map.webp", width: 2560, ...TEXTURE },
 

@@ -10,7 +10,8 @@
  *                       and for every row of an image list such as `logos`
  *  - dropdowns        — `category` lists the live Portfolio Categories,
  *                       `platform` lists the supported social networks,
- *                       `nameSide` places a director's name left or right
+ *                       `nameSide` places a director's name left or right,
+ *                       `headingColor` picks dark or light heading text
  *  - reorderable rows — ▲/▼ move repeater rows; PHP rebuilds the array in the
  *                       order the fields arrive in the POST body
  *
@@ -85,7 +86,7 @@ function samudra_section_notes() {
         'home'     => 'Each service card links to /services with its <strong>Category</strong> preselected. The News strip shows the latest posts from <strong>News</strong>. In headings a line break is a new line on the site.',
         'about'    => 'A blank line in a text starts a new paragraph. In headings a line break is a new line on the site.',
         'people'   => 'Portraits look best at 4:5 (e.g. 800 × 1000 px) on a black background. <strong>Name Side</strong> puts a director\'s name on the left or right of the photo.',
-        'services' => 'The <strong>Intro</strong> shows while "All" is selected. The text for each category is that category\'s <strong>Description</strong> under <a href="' . esc_url($categories) . '">Portfolios → Categories</a>. The project cards come from <strong>Portfolios</strong>.',
+        'services' => 'The <strong>Intro</strong> shows while "All" is selected. The text for each category is that category\'s <strong>Description</strong> under <a href="' . esc_url($categories) . '">Portfolios → Categories</a>. The project cards come from <strong>Portfolios</strong>. <strong>Logos</strong>: white on a transparent background, cropped tight to the logo (no empty margin), about 240 px tall; wide and square logos are balanced automatically.',
         'news'     => 'The articles themselves are managed under <strong>News</strong>. <strong>Background Image</strong> is the photo behind the News & Event page.',
         'contact'  => 'Texts of the Request a Proposal form. Submissions are listed under <strong>Proposal Requests</strong>; who gets the e-mail is set in <a href="' . esc_url($form_settings) . '">Form Settings</a>.',
         'career'   => 'Open positions are managed under <strong>Career</strong> (a position disappears from the site after its closing date). Applications are listed under <strong>Applications</strong>; who gets the e-mail is set in <a href="' . esc_url($form_settings) . '">Form Settings</a>.',
@@ -166,6 +167,9 @@ function samudra_select_options($key, $ctx = []) {
             'youtube'   => 'YouTube',
             'linkedin'  => 'LinkedIn',
         ];
+    }
+    if ($key === 'headingColor') {
+        return ['dark' => 'Dark (for a light background image)', 'light' => 'Light (for a dark background image)'];
     }
     if ($key === 'nameSide') {
         return ['right' => 'Right', 'left' => 'Left'];

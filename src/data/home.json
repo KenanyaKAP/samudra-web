@@ -29,7 +29,8 @@
   },
   "services": {
     "heading": "Service",
-    "backgroundImage": "/images/home/service-bg.webp",
+    "headingColor": "dark",
+    "backgroundImage": "/images/home/service-tiles.webp",
     "buttonLabel": "More",
     "items": [
       {

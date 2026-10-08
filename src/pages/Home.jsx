@@ -106,7 +106,9 @@ function Home() {
         sx={{ ...coverSx(services.backgroundImage), height: SECTION_HEIGHT, minHeight: { md: 600 } }}
       >
         <Box sx={{ ...block(WIDE), pt: { xs: 10, md: fluid(148, 80) }, pb: { xs: 10, md: 0 } }}>
-          <PageHeading component="h2" size={49}>
+          {/* Site Content → Home → Services → Heading Color: "dark" on a
+              light background image, "light" on a dark one. */}
+          <PageHeading component="h2" size={49} color={services.headingColor === "light" ? "common.white" : "text.primary"}>
             {services.heading}
           </PageHeading>
           <Box
