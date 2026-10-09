@@ -4,9 +4,10 @@ import { useSection } from "../hooks/useSiteData";
 import { block, fluid, WIDE } from "../utils/design";
 import { ROBOTO } from "../theme";
 
-// Page colour of the design. The portraits and the crew photo are shot on
-// black, so their edges are faded out (FADE) to melt into it.
-const PHOTO_BLACK = "#110F0D";
+// The portraits and the crew photo are shot on pure black, so the page is
+// pure black too (the design's #110F0D showed every portrait as a box), and
+// their edges are faded out (FADE) to melt into it.
+const PHOTO_BLACK = "#000";
 const FADE = {
   WebkitMaskImage: "radial-gradient(ellipse 68% 74% at 50% 42%, #000 45%, transparent 98%)",
   maskImage: "radial-gradient(ellipse 68% 74% at 50% 42%, #000 45%, transparent 98%)",
@@ -53,6 +54,12 @@ function Director({ person }) {
 // first row a little higher, second row noticeably lower.
 const STAGGER = [-26, 81];
 
+// From 1200 px the 3-across group follows the team photo instead: the second
+// row is narrower (its outer people move in by a share of a column) and its
+// middle person sits lower, so the six form a circle. The drop is a margin,
+// not a transform, so the sections below move down with it.
+const CIRCLE = { inset: "32%", drop: 180 };
+
 /** One group of managers: portraits cut from the team shots, names below. */
 function Group({ group, index }) {
   const members = group.members || [];
@@ -74,7 +81,12 @@ function Group({ group, index }) {
     >
       {members.map((m, i) => {
         const row = Math.floor(i / columns);
-        const shift = columns === 3 && i % 3 === 1 ? STAGGER[row] || 0 : 0;
+        const col = i % columns;
+        const shift = columns === 3 && col === 1 ? STAGGER[row] || 0 : 0;
+        // fluid() takes positive sizes, so the sign goes outside.
+        const stagger = shift ? `translateY(calc(${Math.sign(shift)} * ${fluid(Math.abs(shift), 0)}))` : "none";
+        const circleRow = columns === 3 && row === 1;
+        const inset = circleRow && col !== 1 ? `translateX(${col === 0 ? "" : "-"}${CIRCLE.inset})` : null;
         return (
           <Box
             key={(m.name || "") + i}
@@ -82,8 +94,8 @@ function Group({ group, index }) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // fluid() takes positive sizes, so the sign goes outside.
-              transform: { md: shift ? `translateY(calc(${Math.sign(shift)} * ${fluid(Math.abs(shift), 0)}))` : "none" },
+              transform: { md: stagger, lg: circleRow ? inset || "none" : stagger },
+              mt: { lg: circleRow && col === 1 ? fluid(CIRCLE.drop) : 0 },
             }}
           >
             {m.photo && (
