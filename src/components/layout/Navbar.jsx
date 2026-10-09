@@ -31,13 +31,52 @@ function Hamburger({ open }) {
   );
 }
 
+// Frosted glass, as on iOS: what scrolls behind the bar is blurred and its
+// colours boosted, under a dark tint, with a sheen from the top-left.
+// Browsers without backdrop-filter keep the plain translucent bar.
+const GLASS = {
+  // Over white the tint alone sets the contrast of the white labels: 0.48
+  // keeps it at least as high as the old flat bar.
+  bgcolor: "rgba(24, 22, 22, 0.48)",
+  backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0) 100%)",
+  backdropFilter: "blur(24px) saturate(180%)",
+  WebkitBackdropFilter: "blur(24px) saturate(180%)",
+  boxShadow: "0 1px 2px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.14)",
+  "@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)))": {
+    bgcolor: "brand.nav",
+    backgroundImage: "none",
+  },
+  // The glass rim: a 1 px ring that catches the light along the top, fades
+  // down the sides and glints again at the bottom. It follows the corner
+  // radii and sits above the red tab, so the outline never breaks.
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    borderRadius: "inherit",
+    padding: "1px",
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.06) 70%, rgba(255,255,255,0.22) 100%)",
+    WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+    WebkitMaskComposite: "xor",
+    mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+    maskComposite: "exclude",
+    pointerEvents: "none",
+    zIndex: 1,
+  },
+};
+
+// The design's shape: one large rounded corner bottom-left. The other three
+// get a small radius so the glass edge does not end in hard points.
+const SOFT_CORNER = { xs: 6, lg: fluid(8, 6) };
+
 function isActive(pathname, path) {
   if (path === "/") return pathname === "/";
   return pathname === path || pathname.startsWith(path + "/");
 }
 
 /**
- * Floating navigation bar (New Design.pdf): a translucent dark bar 1532 px
+ * Floating navigation bar (New Design.pdf): a frosted-glass bar 1532 px
  * wide and 96 px tall, 47 px from the top at 1920. The current page is a red
  * tab the full height of the bar. Below the lg breakpoint it collapses into a
  * full-screen menu.
@@ -86,7 +125,11 @@ function Navbar() {
             ...block(1532),
             pointerEvents: "auto",
             height: { xs: 64, lg: fluid(96, 72) },
-            bgcolor: "brand.nav",
+            position: "relative",
+            ...GLASS,
+            borderTopLeftRadius: SOFT_CORNER,
+            borderTopRightRadius: SOFT_CORNER,
+            borderBottomRightRadius: SOFT_CORNER,
             borderBottomLeftRadius: { xs: 18, lg: fluid(30, 20) },
             display: "flex",
             alignItems: "stretch",
