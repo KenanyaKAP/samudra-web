@@ -16,6 +16,17 @@ import Chevron from "../components/ui/Chevron";
 // keeps that 16:9 proportion, on phones it grows with its content.
 const SECTION_HEIGHT = { xs: "auto", md: "56.25vw" };
 
+// The office map below md: a 600 px tall window on the image, which is
+// drawn taller so that its empty black above and below the islands (shares
+// of its height) is trimmed; scrolled `start` of the way in on load.
+const MAP_TRIM = { top: 0.15, bottom: 0.12 };
+const MAP = {
+  height: "600px",
+  imageHeight: `${Math.round(600 / (1 - MAP_TRIM.top - MAP_TRIM.bottom))}px`,
+  trimTop: MAP_TRIM.top,
+  start: 0.12,
+};
+
 const coverSx = (image) => ({
   backgroundImage: cssUrl(image),
   backgroundSize: "cover",
@@ -238,13 +249,40 @@ function Home() {
         sx={{ bgcolor: "#000", lineHeight: 0 }}
       >
         {map.mapImage && (
+          // Below md the labels would be too small at the screen's width, so
+          // the map keeps a readable height (its empty top and bottom
+          // trimmed) and scrolls sideways.
           <Box
-            component="img"
-            src={map.mapImage}
-            alt={map.alt || ""}
-            loading="lazy"
-            sx={{ width: "100%", height: "auto", display: "block" }}
-          />
+            role="region"
+            aria-label={map.alt || "Map"}
+            tabIndex={0}
+            sx={{
+              height: { xs: MAP.height, md: "auto" },
+              overflowX: { xs: "auto", md: "hidden" },
+              overflowY: "hidden",
+            }}
+          >
+            <Box
+              component="img"
+              src={map.mapImage}
+              alt={map.alt || ""}
+              loading="lazy"
+              // Start with Medan in view and the next label peeking in, so
+              // it is clear there is more to the right.
+              onLoad={(e) => {
+                const scroller = e.currentTarget.parentElement;
+                scroller.scrollLeft =
+                  (scroller.scrollWidth - scroller.clientWidth) * MAP.start;
+              }}
+              sx={{
+                display: "block",
+                width: { xs: "auto", md: "100%" },
+                maxWidth: { xs: "none", md: "100%" },
+                height: { xs: MAP.imageHeight, md: "auto" },
+                mt: { xs: `calc(-1 * ${MAP.imageHeight} * ${MAP.trimTop})`, md: 0 },
+              }}
+            />
+          </Box>
         )}
       </Box>
     </>

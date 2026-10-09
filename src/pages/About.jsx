@@ -21,6 +21,10 @@ const roboto = (px, weight = 300) => ({
   fontSize: { xs: Math.max(15, Math.round(px * 0.85)), lg: fluid(px, 13) },
 });
 
+// Below lg the CEO photo is a band across the top, at least 440 px tall and
+// always wide enough to fill the screen; the parts stack under it.
+const STACK_PHOTO = "max(440px, 56.25vw)";
+
 const cover = (image, position = "center") => ({
   backgroundImage: cssUrl(image),
   backgroundSize: "cover",
@@ -38,9 +42,19 @@ function CeoMessage({ ceo = {} }) {
         height: FRAME,
         bgcolor: "#100F0D",
         ...cover(ceo.photo, "left center"),
-        backgroundSize: { xs: "auto 520px", lg: "cover" },
-        backgroundPosition: { xs: "28% top", lg: "left center" },
-        pt: { xs: "470px", lg: 0 },
+        // Stacked: the band starts at the left edge (where the CEO stands)
+        // and fades into the page colour, so it has no hard bottom edge.
+        backgroundImage: {
+          xs: `linear-gradient(rgba(16,15,13,0) 55%, #100F0D), ${cssUrl(ceo.photo)}`,
+          lg: cssUrl(ceo.photo),
+        },
+        backgroundSize: { xs: `100% ${STACK_PHOTO}, auto ${STACK_PHOTO}`, lg: "cover" },
+        backgroundPosition: { xs: "left top", lg: "left center" },
+        // Stacked order: heading and name under the photo, then the quote,
+        // then the letter.
+        display: { xs: "flex", lg: "block" },
+        flexDirection: "column",
+        pt: { xs: `calc(${STACK_PHOTO} - 24px)`, lg: 0 },
         pb: { xs: 8, lg: 0 },
         px: { xs: 2.5, sm: 4, lg: 0 },
         color: "common.white",
@@ -52,12 +66,16 @@ function CeoMessage({ ceo = {} }) {
         sx={{
           ...at(618, 243),
           position: "relative",
+          order: { xs: 2, lg: 0 },
+          mt: { xs: 5, lg: 0 },
           width: { xs: "min(342px, 100%)", lg: fluid(342, 230) },
-          minHeight: { xs: 380, lg: fluid(464, 312) },
+          // Stacked, the bubble grows with the quote instead: the bottom
+          // padding leaves room for the tail.
+          minHeight: { lg: fluid(464, 312) },
           pt: { xs: "52px", lg: fluid(63, 40) },
           pl: { xs: "44px", lg: fluid(58, 36) },
           pr: { xs: "36px", lg: fluid(44, 26) },
-          pb: { xs: "150px", lg: fluid(150, 100) },
+          pb: { xs: "125px", lg: fluid(150, 100) },
           "@media (min-width: 1200px)": { position: "absolute" },
         }}
       >
@@ -75,7 +93,7 @@ function CeoMessage({ ceo = {} }) {
           width: { lg: "49.9%" },
           top: { lg: `${(816 / 10.8).toFixed(3)}%` },
           textAlign: { xs: "left", lg: "right" },
-          mt: { xs: 4, lg: 0 },
+          order: { xs: 1, lg: 0 },
         }}
       >
         <Typography
@@ -94,7 +112,7 @@ function CeoMessage({ ceo = {} }) {
       </Box>
 
       {/* The letter, between the two quote marks */}
-      <Box sx={{ ...at(1195, 239), width: { lg: fluid(572, 380) }, mt: { xs: 5, lg: 0 } }}>
+      <Box sx={{ ...at(1195, 239), order: { xs: 3, lg: 0 }, width: { lg: fluid(572, 380) }, mt: { xs: 5, lg: 0 } }}>
         <QuoteMark sx={{ width: { xs: 64, lg: fluid(88, 60) }, height: "auto" }} />
         <Paragraphs
           text={ceo.body}
@@ -178,7 +196,12 @@ function Company({ company = {} }) {
         height: FRAME,
         bgcolor: "brand.charcoal",
         ...cover(company.backgroundImage, "left center"),
-        backgroundSize: { xs: "auto 100%", lg: "cover" },
+        // Stacked, the picture's right side sits behind the text: plain
+        // there, with the white curves only along the bottom (on its left
+        // side they would run through the words). Wider screens need it
+        // larger to keep the left side out of view.
+        backgroundSize: { xs: "auto 100%", md: "auto 170%", lg: "cover" },
+        backgroundPosition: { xs: "right bottom", lg: "left center" },
         color: "common.white",
         px: { xs: 2.5, sm: 4, lg: 0 },
         py: { xs: 10, lg: 0 },
@@ -271,7 +294,15 @@ function About() {
           src={warehouse.image}
           alt={warehouse.alt || ""}
           loading="lazy"
-          sx={{ width: "100%", height: "auto", display: "block" }}
+          // Phones: a square crop around the door, so its figures are big
+          // enough to read.
+          sx={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            aspectRatio: { xs: "1 / 1", sm: "auto" },
+            objectFit: "cover",
+          }}
         />
       )}
     </>
