@@ -66,10 +66,6 @@ const GLASS = {
   },
 };
 
-// The design's shape: one large rounded corner bottom-left. The other three
-// get a small radius so the glass edge does not end in hard points.
-const SOFT_CORNER = { xs: 6, lg: fluid(8, 6) };
-
 function isActive(pathname, path) {
   if (path === "/") return pathname === "/";
   return pathname === path || pathname.startsWith(path + "/");
@@ -127,9 +123,6 @@ function Navbar() {
             height: { xs: 64, lg: fluid(96, 72) },
             position: "relative",
             ...GLASS,
-            borderTopLeftRadius: SOFT_CORNER,
-            borderTopRightRadius: SOFT_CORNER,
-            borderBottomRightRadius: SOFT_CORNER,
             borderBottomLeftRadius: { xs: 18, lg: fluid(30, 20) },
             display: "flex",
             alignItems: "stretch",
