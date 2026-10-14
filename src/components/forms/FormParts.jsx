@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { block, fluid } from "../../utils/design";
+import { block, fluid, WIDE } from "../../utils/design";
 import SpaLink from "../ui/SpaLink";
 
 /**
@@ -38,7 +38,7 @@ export function FormPanel({ children, sx = {} }) {
   return (
     <Box
       sx={{
-        ...block(1532),
+        ...block(WIDE),
         position: "relative",
         bgcolor: "brand.panel",
         border: "1px solid rgba(255,255,255,0.55)",
@@ -361,7 +361,7 @@ export function SuccessPanel({ title, body }) {
       ref={ref}
       role="status"
       sx={{
-        ...block(1532),
+        ...block(WIDE),
         bgcolor: "#131E17",
         border: "1px solid rgba(58, 181, 74, 0.25)",
         borderRadius: fluid(22, 14),

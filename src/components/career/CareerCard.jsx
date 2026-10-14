@@ -4,7 +4,7 @@ import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { block, fluid } from "../../utils/design";
+import { block, fluid, WIDE } from "../../utils/design";
 
 function Meta({ icon, children, first }) {
   const Icon = icon;
@@ -37,7 +37,7 @@ function CareerCard({ job, applyLabel, closesLabel, onApply }) {
     <Box
       component="article"
       sx={{
-        ...block(1532),
+        ...block(WIDE),
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
         gap: { xs: 3, md: fluid(60, 28) },
@@ -55,7 +55,9 @@ function CareerCard({ job, applyLabel, closesLabel, onApply }) {
           aspectRatio: "1",
           borderRadius: { xs: "14px", md: fluid(22, 14) },
           overflow: "hidden",
-          bgcolor: "#2b2b2b",
+          // The design's photos have their rounded corners cut out already
+          // (transparent), so nothing is painted behind a photo.
+          bgcolor: job.image ? "transparent" : "#2b2b2b",
         }}
       >
         {job.image && <Box component="img" src={job.image} alt="" loading="lazy" sx={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}

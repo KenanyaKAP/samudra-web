@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
-import { block, fluid } from "../utils/design";
+import { block, fluid, WIDE } from "../utils/design";
 import PageHeading from "../components/ui/PageHeading";
 import HeroBackdrop from "../components/ui/HeroBackdrop";
 import {
@@ -88,7 +88,7 @@ function Contact() {
       <HeroBackdrop image={heroImage} photoHeight={{ xs: 560, md: fluid(1270, 700) }} totalHeight={{ xs: 760, md: fluid(1783, 980) }} />
 
       <Box sx={{ position: "relative" }}>
-        <Box sx={{ ...block(1532), pt: { xs: 14, md: fluid(305, 160) } }}>
+        <Box sx={{ ...block(WIDE), pt: { xs: 14, md: fluid(305, 160) } }}>
           <PageHeading size={55}>{heading}</PageHeading>
           <Typography sx={{ mt: { xs: 2.5, md: fluid(26, 16) }, maxWidth: { md: fluid(570, 420) }, fontSize: { xs: 17, md: fluid(24, 16) }, lineHeight: 1.21 }}>
             {intro}

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, ButtonBase, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import Chevron from "../ui/Chevron";
-import { fluid } from "../../utils/design";
+import { EDGE, fluid } from "../../utils/design";
 
 const INTERVAL = 6000;
 
@@ -74,8 +74,8 @@ function HeroCarousel({ slides = [], onScrollDown }) {
       <Box
         sx={{
           position: "absolute",
-          left: { xs: 20, md: "42.24%" },
-          right: { xs: 20, md: fluid(82, 24) },
+          left: { xs: EDGE.xs, sm: EDGE.sm, md: "42.24%" },
+          right: EDGE,
           bottom: { xs: 150, md: fluid(190, 110) },
         }}
       >
@@ -120,7 +120,7 @@ function HeroCarousel({ slides = [], onScrollDown }) {
             aria-label="Slides"
             sx={{
               position: "absolute",
-              right: { xs: 20, md: fluid(82, 24) },
+              right: EDGE,
               bottom: { xs: 120, md: fluid(158, 84) },
               display: "flex",
               gap: fluid(7, 5),

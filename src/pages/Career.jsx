@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
 import { fetchCareerPositions } from "../services/wpApi";
-import { block, fluid } from "../utils/design";
+import { block, fluid, WIDE } from "../utils/design";
 import PageHeading from "../components/ui/PageHeading";
 import HeroBackdrop from "../components/ui/HeroBackdrop";
 import CareerCard from "../components/career/CareerCard";
@@ -108,12 +108,12 @@ function Career() {
 
       <Box sx={{ position: "relative" }}>
         {/* ── Current openings ─────────────────────────────────── */}
-        <Box sx={{ ...block(1532), pt: { xs: 14, md: fluid(305, 160) } }}>
+        <Box sx={{ ...block(WIDE), pt: { xs: 14, md: fluid(305, 160) } }}>
           <PageHeading size={55}>{heading}</PageHeading>
         </Box>
         <Box sx={{ mt: { xs: 5, md: fluid(80, 40) }, display: "grid", rowGap: { xs: 3, md: fluid(48, 28) } }}>
           {loaded && !jobs.length && (
-            <Typography sx={{ ...block(1532), fontSize: { xs: 17, md: fluid(21, 16) }, opacity: 0.85 }}>{emptyText}</Typography>
+            <Typography sx={{ ...block(WIDE), fontSize: { xs: 17, md: fluid(21, 16) }, opacity: 0.85 }}>{emptyText}</Typography>
           )}
           {jobs.map((job) => (
             <CareerCard key={job.id} job={job} applyLabel={applyLabel} closesLabel={closesLabel} onApply={apply} />
@@ -121,7 +121,7 @@ function Career() {
         </Box>
 
         {/* ── Application form ─────────────────────────────────── */}
-        <Box ref={formRef} sx={{ ...block(1532), pt: { xs: 10, md: fluid(170, 90) }, scrollMarginTop: { xs: 60, md: fluid(120, 90) } }}>
+        <Box ref={formRef} sx={{ ...block(WIDE), pt: { xs: 10, md: fluid(170, 90) }, scrollMarginTop: { xs: 60, md: fluid(120, 90) } }}>
           <PageHeading component="h2" size={55}>
             {form.heading}
           </PageHeading>

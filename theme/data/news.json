@@ -1,6 +1,6 @@
 {
   "heading": "News & Event",
-  "backgroundImage": "",
+  "backgroundImage": "/images/news/bg.webp",
   "buttonLabel": "Read More",
   "emptyText": "No news yet.",
   "backLabel": "Back",

@@ -3,13 +3,14 @@ import { Box, ButtonBase } from "@mui/material";
 import useEmblaCarousel from "embla-carousel-react";
 import NewsCard from "../ui/NewsCard";
 import Chevron from "../ui/Chevron";
-import { block, fluid } from "../../utils/design";
+import { block, EDGE, fluid, WIDE } from "../../utils/design";
 
 const GAP = fluid(36, 16);
 
 /**
- * Home news strip: three 492 px cards across 1547 px at 1920 (one and a bit
- * on phones), with the thin side chevrons of the hero. Draggable.
+ * Home news strip: three cards across the content width (one and a bit on
+ * phones), with the thin side chevrons of the hero centred in the side
+ * margins. Draggable.
  */
 function NewsCarousel({ items = [], buttonLabel }) {
   const [emblaRef, embla] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });
@@ -31,13 +32,13 @@ function NewsCarousel({ items = [], buttonLabel }) {
   }, [embla, sync]);
 
   const arrows = [
-    { dir: "left", label: "Previous news", enabled: canPrev, onClick: () => embla?.scrollPrev(), side: { left: fluid(52, 8) } },
-    { dir: "right", label: "Next news", enabled: canNext, onClick: () => embla?.scrollNext(), side: { right: fluid(30, 4) } },
+    { dir: "left", label: "Previous news", enabled: canPrev, onClick: () => embla?.scrollPrev(), side: { left: 0 } },
+    { dir: "right", label: "Next news", enabled: canNext, onClick: () => embla?.scrollNext(), side: { right: 0 } },
   ];
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Box ref={emblaRef} sx={{ ...block(1547), overflow: "hidden" }}>
+      <Box ref={emblaRef} sx={{ ...block(WIDE), overflow: "hidden" }}>
         <Box sx={{ display: "flex", gap: GAP }}>
           {items.map((news) => (
             <Box
@@ -76,7 +77,8 @@ function NewsCarousel({ items = [], buttonLabel }) {
             top: "38%",
             transform: "translateY(-50%)",
             ...a.side,
-            p: 1,
+            width: { md: EDGE.md, lg: EDGE.lg },
+            py: 1,
             color: "rgba(255,255,255,0.85)",
             "&:hover": { color: "common.white" },
             "&.Mui-disabled": { opacity: 0.3 },

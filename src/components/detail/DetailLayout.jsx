@@ -3,7 +3,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SpaLink from "../ui/SpaLink";
 import Paragraphs from "../ui/Paragraphs";
-import { block, fluid } from "../../utils/design";
+import { block, fluid, WIDE } from "../../utils/design";
 
 const ink = "brand.ink";
 
@@ -49,8 +49,8 @@ function PagerLink({ item, basePath, label, direction }) {
 
 /**
  * Shared detail page of a portfolio project and a news post (New
- * Design.pdf): centred photo, uppercase title, red subtitle, the article and
- * BACK / NEXT links to the neighbouring items.
+ * Design.pdf): photo, uppercase title, red subtitle, the article and BACK /
+ * NEXT links to the neighbouring items, all across the content width.
  */
 function DetailLayout({
   image,
@@ -68,13 +68,15 @@ function DetailLayout({
 
   return (
     <Box component="article" sx={{ bgcolor: "common.white", pt: { xs: 12, md: fluid(278, 150) }, pb: { xs: 8, md: fluid(88, 60) } }}>
-      <Box sx={block(1220)}>
+      <Box sx={block(WIDE)}>
         {image && (
           <Box
             component="img"
             src={image}
             alt=""
-            sx={{ width: "100%", aspectRatio: "1217 / 753", objectFit: "cover", display: "block", bgcolor: "#eee" }}
+            // As tall as in the design (753 px at 1920), now across the
+            // full content width, so the title stays near the fold.
+            sx={{ width: "100%", aspectRatio: { xs: "1217 / 753", md: "1780 / 753" }, objectFit: "cover", display: "block", bgcolor: "#eee" }}
           />
         )}
 
@@ -87,7 +89,6 @@ function DetailLayout({
             fontWeight: 700,
             lineHeight: 1.1,
             textTransform: "uppercase",
-            maxWidth: { md: fluid(900, 600) },
           }}
         >
           {title}
@@ -98,7 +99,7 @@ function DetailLayout({
           </Typography>
         )}
 
-        <Box sx={{ mt: { xs: 3, md: fluid(36, 24) }, px: { md: fluid(6, 0) } }}>
+        <Box sx={{ mt: { xs: 3, md: fluid(36, 24) } }}>
           {hasHtml ? (
             <Box sx={articleSx} dangerouslySetInnerHTML={{ __html: html }} />
           ) : (
@@ -114,8 +115,6 @@ function DetailLayout({
             aria-label="More"
             sx={{
               mt: { xs: 7, md: fluid(150, 80) },
-              pl: { md: fluid(18, 0) },
-              pr: { md: fluid(87, 0) },
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",

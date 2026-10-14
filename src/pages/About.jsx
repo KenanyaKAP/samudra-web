@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
 import { cssUrl } from "../utils/cssUrl";
-import { block, fluid, WIDE } from "../utils/design";
+import { block, EDGE, fluid, WIDE } from "../utils/design";
 import { ROBOTO } from "../theme";
 import { QuoteMark, RoundedFrame, SpeechBubble } from "../components/about/Frames";
 import Paragraphs from "../components/ui/Paragraphs";
@@ -11,7 +11,8 @@ import PageHeading from "../components/ui/PageHeading";
 // Each part of the page is one 1920×1080 frame of the design. From the lg
 // breakpoint (1200 px) the frame keeps its 16:9 proportion and everything
 // inside sits where the PDF puts it (x/y as a share of 1920/1080); narrower,
-// there is not enough room for that, so the parts stack.
+// there is not enough room for that, so the parts stack. Text that runs to
+// the right of a frame ends on the content edge shared by every page.
 const FRAME = { xs: "auto", lg: "max(56.25vw, 700px)" };
 const at = (x, y) => ({ position: { lg: "absolute" }, left: { lg: `${(x / 19.2).toFixed(3)}%` }, top: { lg: `${(y / 10.8).toFixed(3)}%` } });
 
@@ -56,7 +57,7 @@ function CeoMessage({ ceo = {} }) {
         flexDirection: "column",
         pt: { xs: `calc(${STACK_PHOTO} - 24px)`, lg: 0 },
         pb: { xs: 8, lg: 0 },
-        px: { xs: 2.5, sm: 4, lg: 0 },
+        px: { xs: 2.5, sm: 4, md: 6, lg: 0 },
         color: "common.white",
         overflow: "hidden",
       }}
@@ -112,7 +113,7 @@ function CeoMessage({ ceo = {} }) {
       </Box>
 
       {/* The letter, between the two quote marks */}
-      <Box sx={{ ...at(1195, 239), order: { xs: 3, lg: 0 }, width: { lg: fluid(572, 380) }, mt: { xs: 5, lg: 0 } }}>
+      <Box sx={{ ...at(1195, 239), right: { lg: EDGE.lg }, order: { xs: 3, lg: 0 }, mt: { xs: 5, lg: 0 } }}>
         <QuoteMark sx={{ width: { xs: 64, lg: fluid(88, 60) }, height: "auto" }} />
         <Paragraphs
           text={ceo.body}
@@ -140,7 +141,7 @@ function VisionMission({ vision = {} }) {
           lg: cssUrl(vision.backgroundImage),
         },
         color: "common.white",
-        px: { xs: 2.5, sm: 4, lg: 0 },
+        px: { xs: 2.5, sm: 4, md: 6, lg: 0 },
         py: { xs: 10, lg: 0 },
       }}
     >
@@ -176,7 +177,7 @@ function VisionMission({ vision = {} }) {
         gap="1.5em"
         sx={{
           ...at(1171, 445),
-          width: { lg: fluid(580, 400) },
+          right: { lg: EDGE.lg },
           mt: { xs: 6, lg: 0 },
           ...roboto(24),
           lineHeight: 1.5,
@@ -203,7 +204,7 @@ function Company({ company = {} }) {
         backgroundSize: { xs: "auto 100%", md: "auto 170%", lg: "cover" },
         backgroundPosition: { xs: "right bottom", lg: "left center" },
         color: "common.white",
-        px: { xs: 2.5, sm: 4, lg: 0 },
+        px: { xs: 2.5, sm: 4, md: 6, lg: 0 },
         py: { xs: 10, lg: 0 },
       }}
     >
@@ -226,7 +227,10 @@ function Company({ company = {} }) {
   );
 }
 
-/** Strategic Alliance: red section, logo column + text column per partner. */
+/**
+ * Strategic Alliance: red section, logo column + text column per partner,
+ * the logos on the left edge of the content and the text up to its right.
+ */
 function Alliance({ alliance = {} }) {
   return (
     <Box
@@ -248,7 +252,7 @@ function Alliance({ alliance = {} }) {
                 gap: { xs: 3, lg: 0 },
               }}
             >
-              <Box sx={{ display: "flex", justifyContent: { xs: "flex-start", lg: "center" }, pl: { lg: fluid(80, 20) } }}>
+              <Box sx={{ display: "flex" }}>
                 {item.logo && (
                   <Box
                     component="img"
@@ -259,7 +263,7 @@ function Alliance({ alliance = {} }) {
                   />
                 )}
               </Box>
-              <Box sx={{ maxWidth: { lg: fluid(940, 520) } }}>
+              <Box>
                 <Typography component="h3" sx={{ fontSize: { xs: 19, lg: fluid(24, 16) }, fontWeight: 600 }}>
                   {item.title}
                 </Typography>

@@ -32,18 +32,18 @@ const labelSx = {
 };
 
 /**
- * Site footer (New Design.pdf): headquarter on the left, the branch offices
- * in two columns on the right, one rule across both, then the logo,
- * copyright and social links.
+ * Site footer (the client's footer.pdf, Oct 2026): headquarter on the left,
+ * the branch offices in two columns on the right, one rule across both, then
+ * the Samudra mark with the copyright under it, and the social links.
  */
 function Footer() {
-  const { logo, offices = {}, footer = {} } = useSection("global");
+  const { offices = {}, footer = {} } = useSection("global");
   const branches = offices.branches || [];
   const socials = (footer.socials || []).filter((s) => SOCIAL_ICONS[s.platform] && s.url);
 
   return (
     <Box component="footer" sx={{ bgcolor: "brand.charcoal", color: "common.white" }}>
-      <Box sx={{ ...block(WIDE), pt: { xs: 7, lg: fluid(170, 80) }, pb: { xs: 5, lg: fluid(70, 40) } }}>
+      <Box sx={{ ...block(WIDE), pt: { xs: 7, lg: fluid(90, 48) }, pb: { xs: 5, lg: fluid(35, 24) } }}>
         {/* Labels + one rule across both columns */}
         <Box
           sx={{
@@ -76,7 +76,7 @@ function Footer() {
             >
               {footer.headquarterLabel}
             </Typography>
-            <OfficeBlock office={offices.headquarter} />
+            <OfficeBlock office={offices.headquarter} loose />
           </Box>
 
           <Box>
@@ -91,7 +91,7 @@ function Footer() {
                 display: "grid",
                 gridTemplateColumns: { xs: "1fr", sm: "426fr 453fr" },
                 columnGap: 3,
-                rowGap: { xs: 4, md: fluid(44, 28) },
+                rowGap: { xs: 4, md: fluid(67, 32) },
               }}
             >
               {branches.map((office, i) => (
@@ -104,7 +104,7 @@ function Footer() {
         {/* Logo + copyright | Connect with us */}
         <Box
           sx={{
-            mt: { xs: 7, lg: fluid(100, 56) },
+            mt: { xs: 7, lg: fluid(17, 10) },
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             alignItems: { xs: "flex-start", md: "flex-end" },
@@ -112,17 +112,25 @@ function Footer() {
             gap: 4,
           }}
         >
-          <Box>
-            <Box
-              component="img"
-              src={logo}
-              alt="Samudra"
-              sx={{ width: { xs: 260, md: fluid(517, 300) }, height: "auto", display: "block" }}
-            />
-            <Typography sx={{ mt: fluid(82, 24), fontSize: fluid(16, 13) }}>{footer.copyright}</Typography>
+          {/* The padding sets "Connect with us" a little lower than the
+              copyright, as in the design. */}
+          <Box sx={{ pb: { md: fluid(13, 6) } }}>
+            {footer.logo && (
+              <Box
+                component="img"
+                src={footer.logo}
+                alt="Samudra"
+                sx={{ width: { xs: 96, md: fluid(134, 96) }, height: "auto", display: "block" }}
+              />
+            )}
+            {/* As small as in the design on desktop; readable on phones
+                and tablets. */}
+            <Typography sx={{ mt: { xs: 2, lg: fluid(28, 14) }, fontSize: { xs: 11, lg: fluid(9.5, 9) } }}>
+              {footer.copyright}
+            </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: fluid(34, 20), mb: { md: fluid(24, 8) } }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: fluid(34, 20) }}>
             <Typography sx={{ fontSize: fluid(26, 18), fontWeight: 600, textTransform: "uppercase" }}>
               {footer.connectLabel}
             </Typography>

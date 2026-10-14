@@ -70,6 +70,7 @@
     ]
   },
   "footer": {
+    "logo": "/images/logo-mark.png",
     "headquarterLabel": "OUR HEADQUARTER",
     "branchLabel": "BRANCH OFFICE",
     "connectLabel": "CONNECT WITH US",

@@ -3,13 +3,16 @@ import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { fetchEventItems } from "../services/wpApi";
 import { useSection } from "../hooks/useSiteData";
 import { cssUrl } from "../utils/cssUrl";
-import { block, fluid } from "../utils/design";
+import { block, fluid, WIDE } from "../utils/design";
 import PageHeading from "../components/ui/PageHeading";
 import NewsCard from "../components/ui/NewsCard";
 
-// Until the designer's background photo is supplied (Site Content → News
-// Page → Background Image), a dark-to-red wash in the colours of the PDF.
-const PLACEHOLDER_BG = "linear-gradient(180deg, #120E0D 0%, #2A1110 38%, #7E1519 72%, #C41A21 100%)";
+// The PDF's background: the photo in black and white under a dark-to-red
+// gradient set to Multiply, so the photo shows through most where it is
+// lightest. The stops are the gradient as the PDF renders it (rich black to
+// the brand red, slightly eased). Without a photo the wash alone is shown.
+const WASH =
+  "linear-gradient(180deg, #110F0D 0%, #261917 20%, #49221F 40%, #6B2724 55%, #952A29 70%, #C3282A 85%, #EA2027 100%)";
 
 const GAP = fluid(38, 20);
 
@@ -52,12 +55,19 @@ function Events() {
   return (
     <Box
       sx={{
-        background: backgroundImage ? `${cssUrl(backgroundImage)} center top / cover no-repeat, #120E0D` : PLACEHOLDER_BG,
+        position: "relative",
+        isolation: "isolate",
+        background: WASH,
         color: "common.white",
         minHeight: "100vh",
+        ...(backgroundImage && {
+          "&::before, &::after": { content: '""', position: "absolute", inset: 0, zIndex: -1 },
+          "&::before": { background: `${cssUrl(backgroundImage)} center top / cover no-repeat`, filter: "grayscale(1)" },
+          "&::after": { background: WASH, mixBlendMode: "multiply" },
+        }),
       }}
     >
-      <Box sx={{ ...block(1551), pt: { xs: 14, md: fluid(220, 150) }, pb: { xs: 8, md: fluid(82, 60) } }}>
+      <Box sx={{ ...block(WIDE), pt: { xs: 14, md: fluid(220, 150) }, pb: { xs: 8, md: fluid(82, 60) } }}>
         <PageHeading size={55}>{heading}</PageHeading>
 
         {loaded && !items.length && <Typography sx={{ mt: 6, opacity: 0.8 }}>{emptyText}</Typography>}

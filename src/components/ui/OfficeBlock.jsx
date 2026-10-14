@@ -27,9 +27,12 @@ function NumberLine({ label, numbers }) {
  * One office in the footer: city heading, then company (headquarter only),
  * address lines and Phone / HP / Fax / Email.
  *
+ * `loose` is the headquarter of the design: wider line spacing and a blank
+ * line before the email.
+ *
  * Site Content → Global → Offices.
  */
-function OfficeBlock({ office = {} }) {
+function OfficeBlock({ office = {}, loose = false }) {
   const address = filled(office.address);
   const lines = office.company ? [office.company, ...address] : address;
 
@@ -43,7 +46,7 @@ function OfficeBlock({ office = {} }) {
       </Typography>
       <Typography
         component="address"
-        sx={{ mt: fluid(14, 8), fontStyle: "normal", fontSize: fluid(17, 14), lineHeight: 1.5 }}
+        sx={{ mt: fluid(14, 8), fontStyle: "normal", fontSize: fluid(17, 14), lineHeight: loose ? 1.62 : 1.5 }}
       >
         {lines.map((line) => (
           <Box component="span" key={line} sx={{ display: "block" }}>
@@ -54,7 +57,7 @@ function OfficeBlock({ office = {} }) {
         <NumberLine label="HP" numbers={filled(office.mobile)} />
         <NumberLine label="Fax" numbers={filled(office.fax)} />
         {office.email && (
-          <Box component="span" sx={{ display: "block" }}>
+          <Box component="span" sx={{ display: "block", mt: loose ? "1.62em" : 0 }}>
             Email :{" "}
             <MuiLink href={`mailto:${office.email}`} sx={linkSx}>
               {office.email}

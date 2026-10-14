@@ -34,5 +34,20 @@ export function block(px) {
   return { width: blockWidth(px), mx: "auto" };
 }
 
-/** Content width of the full-bleed pages (x 70 → 1850 in the design). */
+/**
+ * Content width of every page (x 70 → 1850 at 1920): the navbar, each
+ * section and the footer all share these left and right edges.
+ */
 export const WIDE = 1780;
+
+/**
+ * Distance from the side of the viewport to the content edge, for things
+ * positioned against the screen (fixed buttons, overlays on full-bleed
+ * pictures) that must line up with the content.
+ */
+export const EDGE = {
+  xs: `${GUTTER.xs}px`,
+  sm: `${GUTTER.sm}px`,
+  md: `${GUTTER.md}px`,
+  lg: `calc((100% - min(${WIDE}px, ${vw(WIDE)})) / 2)`,
+};

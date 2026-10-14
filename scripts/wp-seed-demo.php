@@ -308,7 +308,7 @@ $careers = [
         'Grow exhibition and corporate accounts through PEO, PCO and industry relationships.'],
 ];
 foreach ($careers as $i => [$slug, $title, $description]) {
-    samudra_demo_post('career', $slug, [
+    $id = samudra_demo_post('career', $slug, [
         'post_title' => $title,
         'post_date'  => gmdate('Y-m-d H:i:s', strtotime('2026-09-01 09:00:00') + (count($careers) - $i) * HOUR_IN_SECONDS),
     ], [
@@ -318,5 +318,10 @@ foreach ($careers as $i => [$slug, $title, $description]) {
         'career_description'  => $description,
         'career_closing_date' => '2026-10-30',
     ]);
+    // Card photo: images/career/<slug>.webp (from New Design Assets/CAREER).
+    $media = $id ? samudra_demo_media("/images/career/$slug.webp") : ['id' => 0];
+    if ($media['id']) {
+        set_post_thumbnail($id, $media['id']);
+    }
 }
 printf("  ✓ %d career positions (%d stale removed)\n", count($careers), samudra_demo_prune('career', array_column($careers, 0)));

@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useSection } from "../../hooks/useSiteData";
-import { fluid } from "../../utils/design";
+import { EDGE, fluid } from "../../utils/design";
 
 /** "+62 812-3456 7890" → "6281234567890" (the format wa.me expects). */
 function waNumber(number) {
@@ -10,7 +10,8 @@ function waNumber(number) {
 
 /**
  * Floating "Tell us about your project / Chat with Samudra" pill, bottom
- * right on every page (82 px from the right, 50 px from the bottom at 1920).
+ * right on every page: in line with the right edge of the content, 50 px
+ * from the bottom at 1920.
  * Hidden until Site Content → Global → Whatsapp → Number is filled in. On
  * phones only the round icon shows, so it never covers the content.
  */
@@ -30,7 +31,7 @@ function WhatsAppButton() {
       aria-label={`${whatsapp.title || "WhatsApp"} — ${whatsapp.subtitle || ""}`}
       sx={{
         position: "fixed",
-        right: { xs: 16, md: fluid(82, 24) },
+        right: EDGE,
         bottom: { xs: 16, md: fluid(50, 20) },
         zIndex: (t) => t.zIndex.appBar - 2,
         display: "flex",

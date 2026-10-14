@@ -547,21 +547,44 @@ add_action('rest_api_init', function () {
 // Runs once per version bump, on the first request after a deploy.
 // v2 (redesign, Oct 2026): the six About sub-pages became one About page and
 // /people, and "Special Projects" became "Special Project".
+// v3: the footer shows the Samudra mark, a new Site Content field
+// (Global → Footer → Logo). Stored content gets it added, everything else
+// edited in wp-admin is kept.
+// v4: the News & Event page background photo arrived; an empty News Page →
+// Background Image gets it.
 function samudra_maybe_upgrade() {
     $version = (int) get_option('samudra_schema_version', 1);
-    if ($version >= 2) {
+    if ($version >= 4) {
         return;
     }
-    foreach (['aboutHistory', 'aboutCompany', 'aboutVision', 'aboutValues', 'aboutManagement', 'aboutAwards'] as $key) {
-        delete_option('samudra_data_' . $key);
+    if ($version < 2) {
+        foreach (['aboutHistory', 'aboutCompany', 'aboutVision', 'aboutValues', 'aboutManagement', 'aboutAwards'] as $key) {
+            delete_option('samudra_data_' . $key);
+        }
+        $old = get_term_by('slug', 'special-projects', 'portfolio_category');
+        if ($old && !term_exists('special-project', 'portfolio_category')) {
+            wp_update_term($old->term_id, 'portfolio_category', ['name' => 'Special Project', 'slug' => 'special-project']);
+        }
+        samudra_rewrite_rules();
+        flush_rewrite_rules();
     }
-    $old = get_term_by('slug', 'special-projects', 'portfolio_category');
-    if ($old && !term_exists('special-project', 'portfolio_category')) {
-        wp_update_term($old->term_id, 'portfolio_category', ['name' => 'Special Project', 'slug' => 'special-project']);
+    if ($version < 3) {
+        $global = samudra_get_site_data('global');
+        $seed = samudra_get_default_seeds()['global']['footer']['logo'] ?? '';
+        if (is_array($global) && empty($global['footer']['logo']) && $seed !== '') {
+            $global['footer'] = ['logo' => $seed] + (is_array($global['footer'] ?? null) ? $global['footer'] : []);
+            update_option('samudra_data_global', $global);
+        }
     }
-    samudra_rewrite_rules();
-    flush_rewrite_rules();
-    update_option('samudra_schema_version', 2);
+    if ($version < 4) {
+        $news = samudra_get_site_data('news');
+        $seed = samudra_get_default_seeds()['news']['backgroundImage'] ?? '';
+        if (is_array($news) && empty($news['backgroundImage']) && $seed !== '') {
+            $news['backgroundImage'] = $seed;
+            update_option('samudra_data_news', $news);
+        }
+    }
+    update_option('samudra_schema_version', 4);
 }
 add_action('init', 'samudra_maybe_upgrade', 20);
 

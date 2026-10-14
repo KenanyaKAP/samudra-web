@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
-import { block, fluid } from "../utils/design";
+import { block, fluid, WIDE } from "../utils/design";
 import PageHeading from "../components/ui/PageHeading";
 import Paragraphs from "../components/ui/Paragraphs";
 
@@ -15,7 +15,7 @@ function PrivacyPolicy() {
 
   return (
     <Box sx={{ bgcolor: "common.white", color: "brand.ink", pt: { xs: 14, md: fluid(220, 150) }, pb: { xs: 10, md: fluid(140, 80) } }}>
-      <Box sx={block(1220)}>
+      <Box sx={block(WIDE)}>
         <PageHeading size={55} color="brand.ink">
           {heading}
         </PageHeading>

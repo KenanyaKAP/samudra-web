@@ -6,7 +6,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigation } from "../../hooks/useNavigation";
 import { useSection } from "../../hooks/useSiteData";
 import { searchSite } from "../../services/wpApi";
-import { block, fluid } from "../../utils/design";
+import { block, fluid, WIDE } from "../../utils/design";
 
 const MIN_LENGTH = 2;
 
@@ -77,7 +77,7 @@ function SearchOverlay({ open, onClose }) {
         paper: { sx: { bgcolor: "rgba(17, 15, 13, 0.97)", backgroundImage: "none" } },
       }}
     >
-      <Box sx={{ ...block(1532), pt: { xs: 3, lg: fluid(47, 24) }, pb: 8 }}>
+      <Box sx={{ ...block(WIDE), pt: { xs: 3, lg: fluid(47, 24) }, pb: 8 }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <IconButton onClick={onClose} aria-label="Close search" sx={{ color: "common.white" }}>
             <CloseIcon sx={{ fontSize: 32 }} />

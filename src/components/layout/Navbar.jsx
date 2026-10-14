@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useLocation } from "react-router-dom";
 import { useNavigation } from "../../hooks/useNavigation";
 import { useSection } from "../../hooks/useSiteData";
-import { block, fluid } from "../../utils/design";
+import { block, fluid, WIDE } from "../../utils/design";
 import SearchOverlay from "./SearchOverlay";
 
 /** Three bars that fold into an ×. */
@@ -46,24 +46,6 @@ const GLASS = {
     bgcolor: "brand.nav",
     backgroundImage: "none",
   },
-  // The glass rim: a 1 px ring that catches the light along the top, fades
-  // down the sides and glints again at the bottom. It follows the corner
-  // radii and sits above the red tab, so the outline never breaks.
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    inset: 0,
-    borderRadius: "inherit",
-    padding: "1px",
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.06) 70%, rgba(255,255,255,0.22) 100%)",
-    WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-    WebkitMaskComposite: "xor",
-    mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-    maskComposite: "exclude",
-    pointerEvents: "none",
-    zIndex: 1,
-  },
 };
 
 function isActive(pathname, path) {
@@ -72,10 +54,10 @@ function isActive(pathname, path) {
 }
 
 /**
- * Floating navigation bar (New Design.pdf): a frosted-glass bar 1532 px
- * wide and 96 px tall, 47 px from the top at 1920. The current page is a red
- * tab the full height of the bar. Below the lg breakpoint it collapses into a
- * full-screen menu.
+ * Floating navigation bar (New Design.pdf): a frosted-glass bar 96 px tall,
+ * 47 px from the top at 1920, as wide as the page content. The current page
+ * is a red tab the full height of the bar. Below the lg breakpoint it
+ * collapses into a full-screen menu.
  */
 function Navbar() {
   const theme = useTheme();
@@ -118,10 +100,9 @@ function Navbar() {
           component="nav"
           aria-label="Main"
           sx={{
-            ...block(1532),
+            ...block(WIDE),
             pointerEvents: "auto",
             height: { xs: 64, lg: fluid(96, 72) },
-            position: "relative",
             ...GLASS,
             borderBottomLeftRadius: { xs: 18, lg: fluid(30, 20) },
             display: "flex",

@@ -87,6 +87,20 @@ const JOBS = [
   },
   { src: "HOME/Asset 12@600x-8.png", out: "home/redefining-experiences.webp", width: 1440, ...GRAPHIC },
   { src: "HOME/Asset 16@600x-8.png", out: "home/news-bg.webp", width: 2560, ...TEXTURE },
+
+  // ── News & Event page background ──────────────────────────────────
+  // The PDF draws DSC00082 in black and white, 4722 pt wide and 110 pt
+  // above the artboard, so only this window of it shows (the dark-to-red
+  // wash over it is CSS, in Events.jsx).
+  {
+    src: "HOME/DSC00082.JPG",
+    out: "news/bg.webp",
+    width: 1724,
+    crop: { left: 1080, top: 98, width: 1724, height: 2734 },
+    grayscale: true,
+    // Seen only through the wash, so a lower quality does not show.
+    quality: 72,
+  },
   { src: "HOME/map copy2.png", out: "home/map.webp", width: 2560, ...TEXTURE },
 
   // ── Service cards (Home + the four categories) ────────────────────
@@ -98,6 +112,13 @@ const JOBS = [
   // ── Contact / Career heroes ───────────────────────────────────────
   { src: "HOME/IMG_8328.JPG", out: "contact/hero.webp", width: 2560 },
   { src: "HOME/indonesia-hero-1920x1080.jpg", out: "career/hero.webp", width: 2560 },
+
+  // ── Career cards (shown 331 px wide; the corners are rounded and
+  // transparent in the files themselves, so the alpha is kept) ──────
+  { src: "CAREER/production operation.png", out: "career/production-operations-manager.webp", width: 720, alphaQuality: 100 },
+  { src: "CAREER/procrumen & logistic.png", out: "career/procurement-logistic-manager.webp", width: 720, alphaQuality: 100 },
+  { src: "CAREER/sales governent.png", out: "career/sales-governments.webp", width: 720, alphaQuality: 100 },
+  { src: "CAREER/sales corporate.png", out: "career/sales-corporate-exhibition.webp", width: 720, alphaQuality: 100 },
 
   // ── About ─────────────────────────────────────────────────────────
   { src: "ABOUT/Asset 2@600x-8.png", out: "about/ceo.webp", width: 2560, ...TEXTURE },
@@ -162,6 +183,7 @@ for (const job of JOBS) {
   // The 16000×9000 artboard exports are over sharp's default pixel limit.
   let img = sharp(src, { limitInputPixels: false }).rotate();
   if (job.crop) img = img.extract(job.crop);
+  if (job.grayscale) img = img.grayscale();
   const info = await img
     .resize({ width: job.width, withoutEnlargement: true })
     .webp({

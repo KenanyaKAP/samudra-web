@@ -107,7 +107,6 @@ function Home() {
                   width: { xs: "88%", md: fluid(717, 380) },
                   height: "auto",
                   mt: { md: fluid(14, 6) },
-                  mr: { md: fluid(42, 10) },
                 }}
               />
             )}

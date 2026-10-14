@@ -99,28 +99,35 @@ export default function Services() {
             {heading}
           </PageHeading>
 
-          <Box sx={{ pl: { md: fluid(70, 0) }, pr: { md: fluid(22, 0) } }}>
-            <Box
-              role="group"
-              aria-label="Filter projects by service"
-              sx={{ mt: { xs: 5, md: fluid(98, 48) }, display: "flex", flexWrap: "wrap", gap: { xs: 1, md: fluid(12, 8) } }}
-            >
-              {filters.map((cat) => (
-                <FilterChip
-                  key={cat.slug || "all"}
-                  label={cat.name}
-                  active={activeCategory.slug === cat.slug}
-                  onClick={() => selectCategory(cat)}
-                />
-              ))}
-            </Box>
-
-            <Box sx={{ mt: { xs: 4, md: fluid(48, 28) }, ml: { md: `calc(-1 * ${fluid(8, 0)})` }, borderTop: "1px solid", borderColor: "brand.ink" }} />
-
-            <Typography sx={{ mt: { xs: 3, md: fluid(34, 20) }, fontSize: { xs: 16, md: fluid(24, 16) }, lineHeight: 1.2, minHeight: { md: "3.6em" } }}>
-              {description}
-            </Typography>
+          {/* The design sets the chips, rule and description in from the
+              heading and the cards; here they share the page edges. On
+              desktop the chips stretch to fill their row. */}
+          <Box
+            role="group"
+            aria-label="Filter projects by service"
+            sx={{
+              mt: { xs: 5, md: fluid(98, 48) },
+              display: "flex",
+              flexWrap: "wrap",
+              gap: { xs: 1, md: fluid(12, 8) },
+              "& > *": { flexGrow: { lg: 1 } },
+            }}
+          >
+            {filters.map((cat) => (
+              <FilterChip
+                key={cat.slug || "all"}
+                label={cat.name}
+                active={activeCategory.slug === cat.slug}
+                onClick={() => selectCategory(cat)}
+              />
+            ))}
           </Box>
+
+          <Box sx={{ mt: { xs: 4, md: fluid(48, 28) }, borderTop: "1px solid", borderColor: "brand.ink" }} />
+
+          <Typography sx={{ mt: { xs: 3, md: fluid(34, 20) }, fontSize: { xs: 16, md: fluid(24, 16) }, lineHeight: 1.2, minHeight: { md: "3.6em" } }}>
+            {description}
+          </Typography>
 
           <AnimatePresence mode="wait">
             <motion.div

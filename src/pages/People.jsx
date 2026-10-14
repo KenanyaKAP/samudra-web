@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { useSection } from "../hooks/useSiteData";
-import { block, fluid, WIDE } from "../utils/design";
+import { block, EDGE, fluid, WIDE } from "../utils/design";
 import { ROBOTO } from "../theme";
 
 // The portraits and the crew photo are shot on pure black, so the page is
@@ -26,9 +26,13 @@ function NameTag({ name, title, size = 24, sx = {} }) {
   );
 }
 
-/** A director: full-width photo with the name low on the left or right. */
+/**
+ * A director: full-width photo with the name low on the left or right,
+ * against that edge of the content.
+ */
 function Director({ person }) {
   const right = person.nameSide !== "left";
+  const edge = { md: EDGE.md, lg: EDGE.lg };
   return (
     <Box component="figure" sx={{ position: "relative", m: 0, bgcolor: PHOTO_BLACK }}>
       <Box component="img" src={person.photo} alt={person.name} loading="lazy" sx={{ width: "100%", height: "auto", display: "block" }} />
@@ -37,14 +41,12 @@ function Director({ person }) {
         sx={{
           position: { xs: "static", md: "absolute" },
           bottom: fluid(150, 60),
-          // Name blocks are centred on x = 1600 (right) or x = 435 (left).
-          left: right ? "auto" : "22.66%",
-          right: right ? "16.67%" : "auto",
-          transform: { md: right ? "translateX(50%)" : "translateX(-50%)" },
+          left: right ? "auto" : edge,
+          right: right ? edge : "auto",
           py: { xs: 3, md: 0 },
         }}
       >
-        <NameTag name={person.name} title={person.title} size={34} />
+        <NameTag name={person.name} title={person.title} size={34} sx={{ textAlign: { md: right ? "right" : "left" } }} />
       </Box>
     </Box>
   );
@@ -133,7 +135,7 @@ function People() {
           component="h1"
           sx={{
             position: "absolute",
-            right: { xs: 20, md: fluid(191, 40) },
+            right: EDGE,
             bottom: { xs: 24, md: fluid(144, 48) },
             textAlign: "right",
             textTransform: "uppercase",
@@ -159,7 +161,7 @@ function People() {
       ))}
 
       {crew.image && (
-        <Box sx={{ ...block(1532), pt: { xs: 8, md: fluid(180, 80) }, pb: { xs: 8, md: fluid(110, 60) } }}>
+        <Box sx={{ ...block(WIDE), pt: { xs: 8, md: fluid(180, 80) }, pb: { xs: 8, md: fluid(110, 60) } }}>
           <Box
             component="img"
             src={crew.image}
