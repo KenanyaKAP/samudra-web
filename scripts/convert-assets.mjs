@@ -112,6 +112,9 @@ const JOBS = [
   // ── Contact / Career heroes ───────────────────────────────────────
   { src: "HOME/IMG_8328.JPG", out: "contact/hero.webp", width: 2560 },
   { src: "HOME/indonesia-hero-1920x1080.jpg", out: "career/hero.webp", width: 2560 },
+  // Career background since the client's revision of Oct 2026 (the PDF had
+  // the pavilion above; that file stays as a news cover).
+  { src: "CAREER/career.png", out: "career/team-bg.webp", width: 2560 },
 
   // ── Career cards (shown 331 px wide; the corners are rounded and
   // transparent in the files themselves, so the alpha is kept) ──────

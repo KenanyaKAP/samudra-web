@@ -160,20 +160,16 @@ function People() {
         <Group key={(group.name || "") + i} group={group} index={i} />
       ))}
 
+      {/* The whole crew, edge to edge and unfaded, down to the footer
+          (the client's revision of Oct 2026). */}
       {crew.image && (
-        <Box sx={{ ...block(WIDE), pt: { xs: 8, md: fluid(180, 80) }, pb: { xs: 8, md: fluid(110, 60) } }}>
+        <Box sx={{ pt: { xs: 8, md: fluid(180, 80) } }}>
           <Box
             component="img"
             src={crew.image}
             alt={crew.alt || ""}
             loading="lazy"
-            sx={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-              WebkitMaskImage: "radial-gradient(ellipse 62% 66% at 50% 52%, #000 70%, transparent 100%)",
-              maskImage: "radial-gradient(ellipse 62% 66% at 50% 52%, #000 70%, transparent 100%)",
-            }}
+            sx={{ width: "100%", height: "auto", display: "block" }}
           />
         </Box>
       )}

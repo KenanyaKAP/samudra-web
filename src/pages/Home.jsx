@@ -98,6 +98,9 @@ function Home() {
             <PageHeading component="h2" size={49}>
               {about.heading}
             </PageHeading>
+            {/* Centred in the section from md (the client's revision of
+                Oct 2026; the PDF has it top right), a little above the
+                middle. */}
             {about.graphicImage && (
               <Box
                 component="img"
@@ -106,7 +109,10 @@ function Home() {
                 sx={{
                   width: { xs: "88%", md: fluid(717, 380) },
                   height: "auto",
-                  mt: { md: fluid(14, 6) },
+                  position: { md: "absolute" },
+                  left: { md: "50%" },
+                  top: { md: "47.5%" },
+                  transform: { md: "translate(-50%, -50%)" },
                 }}
               />
             )}

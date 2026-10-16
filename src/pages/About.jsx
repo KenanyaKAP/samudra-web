@@ -73,15 +73,17 @@ function CeoMessage({ ceo = {} }) {
           // Stacked, the bubble grows with the quote instead: the bottom
           // padding leaves room for the tail.
           minHeight: { lg: fluid(464, 312) },
-          pt: { xs: "52px", lg: fluid(63, 40) },
-          pl: { xs: "44px", lg: fluid(58, 36) },
-          pr: { xs: "36px", lg: fluid(44, 26) },
-          pb: { xs: "125px", lg: fluid(150, 100) },
+          // The client's revision (Oct 2026): a larger quote that fills the
+          // bubble, so less padding than the PDF.
+          pt: { xs: "26px", lg: fluid(26, 18) },
+          pl: { xs: "30px", lg: fluid(30, 20) },
+          pr: { xs: "16px", lg: fluid(16, 10) },
+          pb: { xs: "160px", lg: fluid(150, 100) },
           "@media (min-width: 1200px)": { position: "absolute" },
         }}
       >
         <SpeechBubble />
-        <Typography sx={{ ...roboto(18), fontStyle: "italic", lineHeight: 1.17, position: "relative" }}>
+        <Typography sx={{ ...roboto(25), fontStyle: "italic", lineHeight: 0.96, position: "relative" }}>
           {ceo.quote}
         </Typography>
       </Box>

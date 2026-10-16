@@ -104,7 +104,14 @@ function Career() {
 
   return (
     <Box sx={{ position: "relative", bgcolor: "brand.page", color: "common.white", pb: { xs: 8, md: fluid(37, 32) } }}>
-      <HeroBackdrop image={heroImage} photoHeight={{ xs: 560, md: fluid(1270, 700) }} totalHeight={{ xs: 760, md: fluid(1783, 980) }} />
+      {/* The team photo, from the top and at its own proportions (1458 px
+          tall at 1920), so the faces clear the navbar. */}
+      <HeroBackdrop
+        image={heroImage}
+        position="center top"
+        photoHeight={{ xs: 560, md: fluid(1458, 800) }}
+        totalHeight={{ xs: 760, md: fluid(1783, 980) }}
+      />
 
       <Box sx={{ position: "relative" }}>
         {/* ── Current openings ─────────────────────────────────── */}

@@ -552,9 +552,11 @@ add_action('rest_api_init', function () {
 // edited in wp-admin is kept.
 // v4: the News & Event page background photo arrived; an empty News Page →
 // Background Image gets it.
+// v5: the Career page has the team photo as background; it replaces the old
+// default (a photo picked in wp-admin stays).
 function samudra_maybe_upgrade() {
     $version = (int) get_option('samudra_schema_version', 1);
-    if ($version >= 4) {
+    if ($version >= 5) {
         return;
     }
     if ($version < 2) {
@@ -584,7 +586,16 @@ function samudra_maybe_upgrade() {
             update_option('samudra_data_news', $news);
         }
     }
-    update_option('samudra_schema_version', 4);
+    if ($version < 5) {
+        $career = samudra_get_site_data('career');
+        $seed = samudra_get_default_seeds()['career']['heroImage'] ?? '';
+        $old = $career['heroImage'] ?? '';
+        if (is_array($career) && $seed !== '' && ($old === '' || $old === '/images/career/hero.webp')) {
+            $career['heroImage'] = $seed;
+            update_option('samudra_data_career', $career);
+        }
+    }
+    update_option('samudra_schema_version', 5);
 }
 add_action('init', 'samudra_maybe_upgrade', 20);
 

@@ -6,7 +6,7 @@ import { cssUrl } from "../../utils/cssUrl";
  * taller than the page itself (e.g. once a form is replaced by its short
  * success message), so it can not cover the footer.
  */
-function HeroBackdrop({ image, photoHeight, totalHeight }) {
+function HeroBackdrop({ image, photoHeight, totalHeight, position = "center" }) {
   return (
     <Box
       aria-hidden="true"
@@ -16,7 +16,7 @@ function HeroBackdrop({ image, photoHeight, totalHeight }) {
         sx={{
           height: photoHeight,
           maxHeight: "100%",
-          background: `linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.3) 45%, #010000 100%), ${cssUrl(image)} center / cover no-repeat`,
+          background: `linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.3) 45%, #010000 100%), ${cssUrl(image)} ${position} / cover no-repeat`,
         }}
       />
     </Box>

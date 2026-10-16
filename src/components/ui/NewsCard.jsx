@@ -4,10 +4,12 @@ import RedBar from "./RedBar";
 import { fluid } from "../../utils/design";
 
 // Design px at 1920 for the two card sizes of New Design.pdf: the 492 px
-// cards (Home strip, News grid) and the 1018 px lead story on /events.
+// cards (Home strip, News grid) and the 1018 px lead story on /events. The
+// lead story's title and excerpt are smaller than in the PDF and spaced out
+// more (the client's revision of Oct 2026).
 const SIZES = {
-  regular: { padX: 25, padTop: 17, date: 15, title: 21, gap: 20, excerpt: 15, minBody: 250, bar: 45, barText: 20 },
-  featured: { padX: 52, padTop: 30, date: 31, title: 63, gap: 40, excerpt: 31, minBody: 470, bar: 92, barText: 41 },
+  regular: { padX: 25, padTop: 17, date: 15, titleGap: 8, title: 21, gap: 20, excerpt: 15, minBody: 250, bar: 45, barText: 20 },
+  featured: { padX: 52, padTop: 30, date: 31, titleGap: 56, title: 45, gap: 50, excerpt: 23, minBody: 470, bar: 92, barText: 41 },
 };
 
 /**
@@ -55,7 +57,7 @@ function NewsCard({ to, image, date, title, description, buttonLabel, size = "re
         <Typography
           component="h3"
           sx={{
-            mt: fluid(featured ? 14 : 8, 6),
+            mt: fluid(s.titleGap, 6),
             fontSize: { xs: featured ? 26 : 19, md: fluid(s.title, featured ? 30 : 17) },
             fontWeight: 600,
             lineHeight: 1.2,
