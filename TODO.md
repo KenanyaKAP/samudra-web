@@ -4,13 +4,17 @@ Ordered by how much they affect the delivered site.
 
 ## 1. Waiting for files or information
 
-- [ ] **Images that are in the design but not in `New Design Assets/`**:
-      the News & Event page background, the photos of most news posts, and
-      the four career card photos. Until then the News page uses a dark-red
-      gradient and those cards show a grey box. When they arrive: the
-      background goes in *Site Content → News Page → Background Image*, the
-      others as Featured Images of the posts / positions (or add them to
-      `scripts/convert-assets.mjs` and the demo seeder).
+- [ ] **News photos that are in the design but not in `New Design Assets/`**:
+      six posts (Manajemen Operasional Pameran End-to-End, Panduan Penting
+      Memilih Kontraktor, Mengelola Manajemen Risiko (HSSE), Dari Konsep
+      Desain ke Realisasi Fisik, Mengenal Sistem Partition R8 dan Maxima,
+      Keunggulan Struktur Roder). The PDF holds them only at 700–1400 px.
+      Until the originals arrive those cards show a grey box. When they do:
+      Featured Image of each post (or add them to `scripts/convert-assets.mjs`
+      and the demo seeder).
+- [ ] **Portfolio photos** — apart from Pavilion Indonesia, the projects on
+      Services are OLD's mock portfolios with one placeholder photo; the real
+      projects and their photos are added under *Portfolios*.
 - [ ] **WhatsApp number** — the floating "Chat with Samudra" button stays
       hidden until a number is set. → *Site Content → Global → Whatsapp*
 - [ ] **Privacy Policy text** — seeded with `[TODO]` placeholder copy, and
@@ -57,7 +61,7 @@ Ordered by how much they affect the delivered site.
 
 - [ ] The JS bundle is ~770 kB (~254 kB gzipped) in one chunk. Route-level
       `React.lazy()` splitting would cut first-load noticeably.
-- [ ] The 12 brand logos and the three older hero slides are still PNG/JPG.
+- [ ] The three older hero slides are still JPG.
 - [ ] Mobile and tablet layouts were derived from the desktop design (the PDF
       has desktop artboards only); worth a review by the designer.
 - [ ] No automated tests. Lint, builds, PHP syntax, routes, REST, forms,
