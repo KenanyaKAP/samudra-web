@@ -19,6 +19,18 @@ const articleSx = {
   "& a": { color: "primary.main" },
   "& img": { maxWidth: "100%", height: "auto" },
   "& figure": { m: "1.2em 0" },
+  // Gallery blocks (WordPress's own block styles are not loaded): the
+  // block's Columns setting across, one photo per row on phones, and with
+  // "Crop images" on, all of them the same 4:3 shape.
+  "& .wp-block-gallery": {
+    display: "grid",
+    gridTemplateColumns: { xs: "1fr", sm: "repeat(var(--columns, 3), 1fr)" },
+    gap: "1.2em",
+    "& figure": { m: 0 },
+    "& img": { display: "block", width: "100%" },
+    "&.is-cropped img": { aspectRatio: "4 / 3", objectFit: "cover" },
+    ...Object.fromEntries([1, 2, 4, 5, 6, 7, 8].map((n) => [`&.columns-${n}`, { "--columns": `${n}` }])),
+  },
   "& blockquote": { m: "1em 0", pl: "1em", borderLeft: "3px solid", borderColor: "primary.main" },
 };
 
