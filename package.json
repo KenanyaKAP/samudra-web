@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "wp:reseed": "node scripts/reseed-wp.js",
     "wp:seed-demo": "node scripts/seed-demo.js",
-    "assets:build": "node scripts/convert-assets.mjs"
+    "assets:build": "node scripts/convert-assets.mjs",
+    "theme:zip": "npm run build:wp && node scripts/zip-theme.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -33,6 +34,7 @@
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
+    "archiver": "^7.0.1",
     "babel-plugin-react-compiler": "^19.1.0-rc.3",
     "cross-env": "^10.1.0",
     "eslint": "^9.36.0",

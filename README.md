@@ -174,6 +174,18 @@ Content page — so the stored sections take the new shape.
 | `npm run wp:reseed [keys…]` | Overwrite Site Content sections from `src/data` |
 | `npm run wp:seed-demo [--clean]` | Create / remove demo content |
 | `npm run assets:build [--force] [filter]` | Convert `New Design Assets/` into `public/images/*.webp` |
+| `npm run theme:zip` | `build:wp`, then package `theme/` as `samudra-react.zip` |
+
+## Packaging the theme
+
+```bash
+npm run theme:zip
+```
+
+Builds the theme and writes `samudra-react.zip` (a single `samudra-react/`
+folder) for **Appearance → Themes → Add New → Upload Theme**. The folder name
+matches the local theme slug, so uploading a new zip replaces the installed
+version instead of adding a second copy.
 
 ## Standalone static deploy (optional)
 

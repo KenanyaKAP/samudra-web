@@ -13,6 +13,9 @@ dist-ssr
 theme/dist
 *.local
 
+# Packaged theme (npm run theme:zip)
+samudra-react.zip
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
